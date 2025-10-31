@@ -1,0 +1,20 @@
+# 构建产物目录
+/dist/*
+/public/*
+/node_modules/*
+
+# 工具/配置目录
+/.husky/*
+/.vscode/*
+/.cache/*
+/coverage/*
+/report.html
+
+# 源代码中特定样式文件（不检查）
+src/style/reset.scss
+
+# 忽略非样式文件
+**/*.js
+**/*.ts
+**/*.jsx
+**/*.tsx

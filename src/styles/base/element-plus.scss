@@ -1,0 +1,183 @@
+@use '../base/variables.scss' as *;
+@use '../utils/mixins.scss' as *;
+@use 'sass:color';
+
+// Switch 开关
+.el-switch {
+  .el-switch__core {
+    cursor: pointer;
+
+    .el-switch__inner {
+      height: 24px;
+    }
+  }
+
+  &.is-checked .el-switch__core {
+    border-color: $primary-color !important;
+    background: #334155 !important;
+  }
+}
+
+// 输入框
+.el-input__wrapper {
+  border-radius: $border-radius !important;
+  padding: $input-padding !important;
+  box-shadow: 0 0 0 1px rgb(184, 179, 179) !important;
+  
+  &:hover {
+    box-shadow: 0 0 0 2px rgb(76, 77, 77) inset !important;
+  }
+  
+  &.is-focus {
+    box-shadow: 0 0 0 2px rgb(35, 203, 249) inset !important;
+  }
+  
+  @include dark-mode {
+    background-color: $social-button-bg-dark;
+
+    &:hover {
+      box-shadow: 0 0 0 2px $dark-primary-color inset !important;
+    }
+    
+    &.is-focus {
+      box-shadow: 0 0 0 2px $dark-primary-color inset !important;
+    }
+  }
+}
+
+// 主按钮
+.el-button--primary {
+  @include button-base;
+  width: 100%;
+  padding: 0.875rem 1rem;
+  background-color: rgb(35, 203, 249) !important;
+  border-color: rgb(35, 203, 249) !important;
+  box-shadow: 1px 1px 3px 1px rgba(0, 0, 0, 0.3) !important;
+  
+  &:hover {
+    background-color: $primary-hover-color !important;
+  }
+}
+
+// 下拉菜单
+.el-dropdown-menu {
+  @include dark-mode {
+    background-color: $background-dark;
+    border-color: $divider-color-dark;
+  }
+}
+
+.el-dropdown-menu__item {
+  @include dark-mode {
+    color: $text-color-dark;
+    
+    &:hover {
+      background-color: $social-button-hover-bg-dark;
+    }
+  }
+}
+
+// 表单项目
+.el-form-item__content {
+  justify-content: center !important;
+}
+
+
+.el-menu {
+  border: none !important;
+  background-color: $sidebar-bg !important;
+  padding: 0 6px !important;
+
+  &.el-menu--collapse {
+    width: 100% !important; // 使用侧边栏容器的全宽
+  }
+
+  // 菜单项通用样式
+  .el-menu-item,
+  .el-sub-menu__title {
+    height: 44px;
+    line-height: 44px;
+    border-radius: 6px;
+    transition: background-color $transition-speed ease;
+   
+    &:hover {
+      background-color: $sidebar-hover-bg !important;
+    
+    }
+    
+    &.is-active {
+      background-color: $sidebar-active-bg !important;
+      color: $primary-color !important;
+      
+      .menu-icon {
+        color: $primary-color !important;
+      }
+    }
+  }
+  
+  // 子菜单样式
+  .el-sub-menu {
+    .el-menu {
+      background-color: color.adjust($sidebar-bg, $lightness: -3%) !important;
+
+      .el-menu-item {
+        padding-left: 45px !important;
+        background-color: color.adjust($sidebar-bg, $lightness: -3%) !important;
+        
+        &:hover {
+          background-color: $sidebar-hover-bg !important;
+        }
+      }
+    }
+  }
+  
+  // 折叠状态下的菜单
+  &.el-menu--collapse {
+    .el-sub-menu {
+      & > .el-sub-menu__title {
+        & > span,
+        & > .el-sub-menu__icon-arrow {
+          display: none;
+        }
+      }
+    }
+  }
+}
+
+// 全局子菜单样式
+.sidebar-submenu {
+  .el-menu {
+    background-color: color.adjust($sidebar-bg, $lightness: -3%) !important;
+  }
+
+  .el-menu-item {
+    color: $text-secondary !important;
+    
+    &:hover {
+      background-color: $sidebar-hover-bg !important;
+    }
+
+    &.is-active {
+      background-color: $sidebar-active-bg !important;
+      color: $primary-color !important;
+    }
+  }
+}
+
+.el-dialog {
+  border-radius: 8px !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+  width: 80% !important;
+  height: 85% !important;
+  margin-top: 5vh !important;
+
+  &.header {
+    padding: 16px 20px !important;
+    border-bottom: 1px solid var(--el-border-color-light) !important;
+    margin: 0;
+  }
+
+  &.body {
+    padding: 0;
+  }
+}

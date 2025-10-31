@@ -1,0 +1,38 @@
+@use '../base/variables.scss' as *;
+
+// 响应式断点
+@mixin respond-to($breakpoint) {
+  @if $breakpoint == sm {
+    @media (min-width: $sm) { @content; }
+  }
+  @else if $breakpoint == md {
+    @media (min-width: $md) { @content; }
+  }
+  @else if $breakpoint == lg {
+    @media (min-width: $lg) { @content; }
+  }
+  @else if $breakpoint == xl {
+    @media (min-width: $xl) { @content; }
+  }
+}
+
+// 暗黑模式
+@mixin dark-mode {
+  .dark & {
+    @content;
+  }
+}
+
+// 元素聚焦状态
+@mixin focus-state {
+  &:focus, &:focus-within {
+    @content;
+  }
+}
+
+// 按钮基础样式
+@mixin button-base {
+  border-radius: $border-radius;
+  transition: all 0.2s ease;
+  font-weight: 500;
+}
