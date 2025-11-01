@@ -13,7 +13,7 @@ import {
 } from './components/ReIcon'
 import router from './router/index'
 import './styles/main.scss'
-import './mock/sidebarMenuData'
+import '../mock/sidebarMenuData'
 import 'element-plus/dist/index.css'
 import '@/router/guard'
 

@@ -2,9 +2,9 @@
 import type { RouteRecordRaw } from 'vue-router'
 import type { LoginParams, UserInfo } from '@/types/auth'
 import type { MenuItemType } from '@/types/menu'
+import { asyncRoutes } from 'mock/asyncRoutes'
 import { defineStore } from 'pinia'
 import { loginApi } from '@/api/user'
-import { asyncRoutes } from '@/mock/asyncRoutes'
 import { addDynamicRoutes } from '@/router'
 import { LayoutType } from '@/router/enums' // 需要全面移除LayoutType，待修改
 import { filterRoutesByRole, sortRoutes } from '@/router/utils'

@@ -10,7 +10,7 @@ import SearchDialog from '@/components/Search/SearchDialog.vue'
 import { useAppStore } from '@/store/app'
 import { useUserStore } from '@/store/auth'
 import SettingsDialog from '@/views/settings/components/SettingsDialog.vue'
-import { mockMessages } from '../../../mock/messageData'
+import { mockMessages } from '../../../../mock/messageData'
 import UnifiedSidebarButton from '../Sidebar/UnifiedSidebarButton.vue'
 
 const { t } = useI18n()
