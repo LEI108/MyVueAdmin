@@ -23,11 +23,4 @@ export const RouteRank = {
   // 用户与权限
   USER_MANAGEMENT: 70,
 
-  // settings页面的各个路由模块
-  SETTINGS_ROOT: 80,
-  SETTINGS_PROFILE: 81,
-  SETTINGS_SYSTEM: 82,
-  SETTINGS_NOTIFICATIONS: 83,
-  SETTINGS_SECURITY: 84,
-
 } as const
