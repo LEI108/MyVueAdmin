@@ -3,7 +3,7 @@
 import { useI18n } from 'vue-i18n'
 import { useRouter } from 'vue-router'
 import Search from '@/components/Search/Search.vue'
-import { useAppStore } from '@/store/app'
+import { useAppStore } from '@/store/modules/app'
 
 const { t } = useI18n()
 const appStore = useAppStore()

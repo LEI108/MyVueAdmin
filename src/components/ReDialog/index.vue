@@ -1,158 +1,210 @@
 <script setup lang="ts">
-import type { ArgsType, ButtonProps, DialogOptions, EventType } from './type'
+import type { ButtonProps, DialogOptions, EventType } from './index'
+import { isFunction } from '@pureadmin/utils'
+import { computed, ref } from 'vue'
 import ExitFullscreen from '~icons/ri/fullscreen-exit-fill'
 import Fullscreen from '~icons/ri/fullscreen-fill'
-import { isFunction } from '../../utils/is'
-import { closeDialog, dialogStore } from './index'
+import {
 
-defineOptions({ name: 'ReDialog' })
+  closeDialog,
 
-/**
- * 初始化弹窗状态（确保每个弹窗有独立的 fullscreen 和 sureBtnLoading）
- * @param options 弹窗配置
- */
-function initDialogState(options: DialogOptions) {
-  // 初始化全屏状态（优先取 options.fullscreen，默认 false）
-  if (options.fullscreen === undefined)
-    options.fullscreen = false
-  // 初始化确定按钮 loading 状态（默认 false）
-  if (options.sureBtnLoading === undefined)
-    options.sureBtnLoading = false
-}
+  dialogStore,
 
-/**
- * 生成默认底部按钮（取消 + 确定）
- * @param options 弹窗配置
- * @param index 弹窗索引
- */
-function getDefaultFooterButtons(options: DialogOptions, index: number): ButtonProps[] {
-  return [
-    {
-      label: '取消',
-      text: true,
-      bg: true,
-      btnClick: () => handleCancel(options, index),
-    },
-    {
-      label: '确定',
-      type: 'primary',
-      text: true,
-      bg: true,
-      popconfirm: options.popconfirm,
-      btnClick: () => handleSure(options, index),
-    },
-  ]
-}
+} from './index'
 
-/** 取消按钮逻辑 */
-function handleCancel(options: DialogOptions, index: number) {
-  const done = () => closeDialog(options, index, { command: 'cancel' })
-  isFunction(options.beforeCancel) ? options.beforeCancel(done, { options, index }) : done()
-}
+defineOptions({
+  name: 'ReDialog',
+})
 
-/** 确定按钮逻辑 */
-function handleSure(options: DialogOptions, index: number) {
-  // 开启 loading（直接修改 options，无需全局 sureBtnMap）
-  options.sureBtnLoading = true
+const sureBtnMap = ref({})
+const fullscreen = ref(false)
 
-  const closeLoading = () => options.sureBtnLoading = false
-  const done = () => {
-    closeLoading()
-    closeDialog(options, index, { command: 'sure' })
+const footerButtons = computed(() => {
+  return (options: DialogOptions) => {
+    return options?.footerButtons?.length > 0
+      ? options.footerButtons
+      : ([
+          {
+            label: '取消',
+            text: true,
+            bg: true,
+            btnClick: ({ dialog: { options, index } }) => {
+              const done = () =>
+                closeDialog(options, index, { command: 'cancel' })
+              if (options?.beforeCancel && isFunction(options?.beforeCancel)) {
+                options.beforeCancel(done, { options, index })
+              }
+              else {
+                done()
+              }
+            },
+          },
+          {
+            label: '确定',
+            type: 'primary',
+            text: true,
+            bg: true,
+            popconfirm: options?.popconfirm,
+            btnClick: ({ dialog: { options, index } }) => {
+              if (options?.sureBtnLoading) {
+                sureBtnMap.value[index] = Object.assign(
+                  {},
+                  sureBtnMap.value[index],
+                  {
+                    loading: true,
+                  },
+                )
+              }
+              const closeLoading = () => {
+                if (options?.sureBtnLoading) {
+                  sureBtnMap.value[index].loading = false
+                }
+              }
+              const done = () => {
+                closeLoading()
+                closeDialog(options, index, { command: 'sure' })
+              }
+              if (options?.beforeSure && isFunction(options?.beforeSure)) {
+                options.beforeSure(done, { options, index, closeLoading })
+              }
+              else {
+                done()
+              }
+            },
+          },
+        ] as Array<ButtonProps>)
   }
+})
 
-  isFunction(options.beforeSure) ? options.beforeSure(done, { options, index, closeLoading }) : done()
+const fullscreenClass = computed(() => {
+  return [
+    'el-icon',
+    'el-dialog__close',
+    '-translate-x-2',
+    'cursor-pointer',
+    'hover:text-[red]!',
+  ]
+})
+
+function eventsCallBack(
+  event: EventType,
+  options: DialogOptions,
+  index: number,
+  isClickFullScreen = false,
+) {
+  if (!isClickFullScreen)
+    fullscreen.value = options?.fullscreen ?? false
+  if (options?.[event] && isFunction(options?.[event])) {
+    return options?.[event]({ options, index })
+  }
 }
 
-/** 切换全屏（修改当前弹窗的 options.fullscreen） */
-function toggleFullscreen(options: DialogOptions) {
-  options.fullscreen = !options.fullscreen
-  options.fullscreenCallBack?.({ options, fullscreen: options.fullscreen })
-}
-
-/** 触发弹窗事件回调（如 open/close） */
-function triggerEvent(options: DialogOptions, index: number, event: EventType) {
-  options[event]?.({ options, index })
+function handleClose(
+  options: DialogOptions,
+  index: number,
+  args = { command: 'close' },
+) {
+  closeDialog(options, index, args)
+  eventsCallBack('close', options, index)
 }
 </script>
 
 <template>
-  <!-- 遍历弹窗队列，动态渲染每个弹窗 -->
   <el-dialog
     v-for="(options, index) in dialogStore"
     :key="index"
     v-bind="options"
     v-model="options.visible"
     class="pure-dialog"
-    :fullscreen="options.fullscreen"
-    @closed="triggerEvent(options, index, 'close')"
-    @opened="triggerEvent(options, index, 'open')"
-    @open-auto-focus="triggerEvent(options, index, 'openAutoFocus')"
-    @close-auto-focus="triggerEvent(options, index, 'closeAutoFocus')"
-    @mounted="initDialogState(options)"
+    :fullscreen="fullscreen ? true : options?.fullscreen ? true : false"
+    @closed="handleClose(options, index)"
+    @opened="eventsCallBack('open', options, index)"
+    @open-auto-focus="eventsCallBack('openAutoFocus', options, index)"
+    @close-auto-focus="eventsCallBack('closeAutoFocus', options, index)"
   >
-    <!-- 头部（标题 + 全屏按钮） -->
-    <template v-if="options.fullscreenIcon || options.headerRenderer" #header="{ close, titleId, titleClass }">
-      <div v-if="options.fullscreenIcon" class="flex items-center justify-between">
-        <span :id="titleId" :class="titleClass">{{ options.title }}</span>
-        <!-- 全屏切换按钮 -->
+    <!-- header -->
+    <template
+      v-if="options?.fullscreenIcon || options?.headerRenderer"
+      #header="{ close, titleId, titleClass }"
+    >
+      <div
+        v-if="options?.fullscreenIcon"
+        class="flex items-center justify-between"
+      >
+        <span :id="titleId" :class="titleClass">{{ options?.title }}</span>
         <i
-          v-if="!options.fullscreen"
-          class="el-icon el-dialog__close -translate-x-2 cursor-pointer hover:text-[red]!"
-          @click="toggleFullscreen(options)"
+          v-if="!options?.fullscreen"
+          :class="fullscreenClass"
+          @click="
+            () => {
+              fullscreen = !fullscreen;
+              eventsCallBack(
+                'fullscreenCallBack',
+                { ...options, fullscreen },
+                index,
+                true,
+              );
+            }
+          "
         >
           <IconifyIconOffline
-            class="dialog-svg"
-            :icon="options.fullscreen ? ExitFullscreen : Fullscreen"
+            class="pure-dialog-svg"
+            :icon="
+              options?.fullscreen
+                ? ExitFullscreen
+                : fullscreen
+                  ? ExitFullscreen
+                  : Fullscreen
+            "
           />
         </i>
       </div>
-      <!-- 自定义头部渲染 -->
       <component
-        :is="options.headerRenderer?.({ close, titleId, titleClass })"
+        :is="options?.headerRenderer({ close, titleId, titleClass })"
         v-else
       />
     </template>
-
-    <!-- 内容区域（自定义组件渲染） -->
     <component
-      v-bind="options.props"
+      v-bind="options?.props"
       :is="options.contentRenderer({ options, index })"
-      v-if="options.contentRenderer"
-      @close="(args: ArgsType) => closeDialog(options, index, args)"
+      @close="args => handleClose(options, index, args)"
     />
-
-    <!-- 底部按钮区域 -->
-    <template v-if="!options.hideFooter" #footer>
-      <!-- 自定义底部渲染 -->
-      <component
-        :is="options.footerRenderer({ options, index })"
-        v-if="options.footerRenderer"
-      />
-      <!-- 默认底部按钮 -->
-      <template v-else>
-        <template v-for="(btn, key) in (options.footerButtons || getDefaultFooterButtons(options, index))" :key="key">
+    <!-- footer -->
+    <template v-if="!options?.hideFooter" #footer>
+      <template v-if="options?.footerRenderer">
+        <component :is="options?.footerRenderer({ options, index })" />
+      </template>
+      <span v-else>
+        <template v-for="(btn, key) in footerButtons(options)" :key="key">
           <el-popconfirm
             v-if="btn.popconfirm"
             v-bind="btn.popconfirm"
-            @confirm="btn.btnClick"
+            @confirm="
+              btn.btnClick({
+                dialog: { options, index },
+                button: { btn, index: key },
+              })
+            "
           >
             <template #reference>
-              <el-button v-bind="btn" :loading="key === 1 && options.sureBtnLoading">
-                {{ btn.label }}
-              </el-button>
+              <el-button v-bind="btn">{{ btn?.label }}</el-button>
             </template>
           </el-popconfirm>
           <el-button
             v-else
             v-bind="btn"
-            :loading="key === 1 && options.sureBtnLoading"
-            @click="btn.btnClick"
+            :loading="key === 1 && sureBtnMap[index]?.loading"
+            @click="
+              btn.btnClick({
+                dialog: { options, index },
+                button: { btn, index: key },
+              })
+            "
           >
-            {{ btn.label }}
+            {{ btn?.label }}
           </el-button>
         </template>
-      </template>
+      </span>
     </template>
   </el-dialog>
 </template>

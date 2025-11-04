@@ -1,7 +1,3 @@
-@use './base/variables.scss';
 @use './base/normalize.css';
-@use './utils/mixins.scss';
-@use './base/element-plus.scss';
-@use './layouts/login.scss';
-@use './layouts/sidebar.scss';
-@use './base/global.scss'
+@use './base/global.scss';
+@use './layouts/element-plus.scss';

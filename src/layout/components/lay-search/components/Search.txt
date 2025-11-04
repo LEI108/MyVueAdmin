@@ -4,7 +4,7 @@ import type { SearchResultItem } from '@/types/app/search'
 import { onMounted, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRouter } from 'vue-router'
-import { useAppStore } from '@/store/app'
+import { useAppStore } from '@/store/modules/app'
 
 const props = defineProps({
   modelValue: { type: String, default: '' },

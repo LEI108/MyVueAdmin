@@ -1,71 +1,62 @@
-import type { App } from 'vue'
-import type { Composer, I18n } from 'vue-i18n'
+// ==== Vue & Vue-i18n 类型 ====
+import type { App, WritableComputedRef } from 'vue'
+import type { I18n } from 'vue-i18n'
 
-// ==== UI 组件库语言包 ====
-// Element Plus
-import elementEn from 'element-plus/es/locale/lang/en'
-import elementZhCn from 'element-plus/es/locale/lang/zh-cn'
+import { isObject, storageLocal } from '@pureadmin/utils'
+// ==== Element Plus 国际化 ====
+import enLocale from 'element-plus/es/locale/lang/en'
+
+import zhLocale from 'element-plus/es/locale/lang/zh-cn'
 import { createI18n } from 'vue-i18n'
+// ==== 项目工具方法 ====
+import { responsiveStorageNameSpace } from '@/config'
 
-// ==== 类型定义 ====
-export type LocaleType = 'zh-CN' | 'en'
-export type LocaleMessages = Record<string, any>
-export type ElementLocaleType = typeof elementZhCn | typeof elementEn
+const siphonI18n = (function () {
+  // 基于项目根目录匹配 locales/lang 下的所有 ts 文件
+  const cache = Object.fromEntries(
+    Object.entries(
+      import.meta.glob('../../locales/lang/**/*.ts', { eager: true }),
+    ).map(([key, value]: any) => {
+      // 匹配 locales/lang/{locale}/{module}.ts
+      // 捕获 {locale}
+      const matched = key.match(/lang\/([\w-]+)\/.+\.ts$/i)?.[1]
+      return [matched, value.default || {}]
+    }),
+  )
 
-// ==== 命名空间加载 ====
+  // 返回对应语言的 messages
+  return (prefix = 'zh-CN') => {
+    return cache[prefix] || {}
+  }
+})()
+
 /**
- * 按模块加载多语言文件
- * 格式： ./lang/{locale}/{module}.ts
- * 例如： ./lang/zh-CN/common.ts
+ * 统一语言配置对象
+ * key 必须和你的 locale 名一致
  */
-function loadLocaleMessages(): Record<LocaleType, LocaleMessages> {
-  const messages: Record<LocaleType, LocaleMessages> = {
-    'zh-CN': {},
-    'en': {},
-  }
-
-  const modules = import.meta.glob('./lang/**/*.ts', { eager: true })
-
-  for (const path in modules) {
-    const match = path.match(/lang\/([\w-]+)\/(.+)\.ts$/i)
-    if (match) {
-      const [, locale, namespace] = match as [string, LocaleType, string]
-      const nsKey = namespace.replace(/\//g, '.') // 支持嵌套文件夹转换为点分隔
-      const moduleData = (modules[path] as any).default
-
-      // 合并同命名空间
-      if (!messages[locale][nsKey]) {
-        messages[locale][nsKey] = moduleData
-      }
-      else {
-        messages[locale][nsKey] = {
-          ...messages[locale][nsKey],
-          ...moduleData,
-        }
-      }
-    }
-  }
-
-  return messages
+export const localesConfigs = {
+  'zh-CN': {
+    ...siphonI18n('zh-CN'),
+    ...zhLocale,
+  },
+  'en': {
+    ...siphonI18n('en'),
+    ...enLocale,
+  },
 }
 
-// ==== 合并 UI 组件库文案 ====
-function mergeUiLibraryMessages(messages: Record<LocaleType, LocaleMessages>) {
-  messages['zh-CN'] = { ...messages['zh-CN'], ...elementZhCn }
-  messages.en = { ...messages.en, ...elementEn }
-  return messages
-}
-
-// ==== Key 扁平化缓存（高性能） ====
-function getObjectKeys(obj: any): Set<string> {
-  const stack: Array<{ obj: any, key: string }> = [{ obj, key: '' }]
+/** 获取对象中所有嵌套对象的 key，并用点号分隔（如 a.b.c） */
+function getObjectKeys(obj: Record<string, any>) {
+  const stack: Array<{ obj: any, key: string }> = []
   const keys: Set<string> = new Set()
+
+  stack.push({ obj, key: '' })
 
   while (stack.length > 0) {
     const { obj, key } = stack.pop()!
     for (const k in obj) {
       const newKey = key ? `${key}.${k}` : k
-      if (obj[k] && typeof obj[k] === 'object' && !Array.isArray(obj[k])) {
+      if (obj[k] && isObject(obj[k])) {
         stack.push({ obj: obj[k], key: newKey })
       }
       else {
@@ -73,87 +64,69 @@ function getObjectKeys(obj: any): Set<string> {
       }
     }
   }
+
   return keys
 }
 
-const keysCache: Map<LocaleType, Set<string>> = new Map()
-function flatI18nKeys(locale: LocaleType, messages: LocaleMessages) {
-  if (!keysCache.has(locale)) {
-    keysCache.set(locale, getObjectKeys(messages))
+/** 缓存扁平化 key，避免重复遍历 */
+const keysCache: Map<string, Set<string>> = new Map()
+function flatI18n(prefix = 'zh-CN') {
+  let cache = keysCache.get(prefix)
+  if (!cache) {
+    cache = getObjectKeys(siphonI18n(prefix))
+    keysCache.set(prefix, cache)
   }
-  return keysCache.get(locale)!
+  return cache
 }
-
-// ==== 存储语言配置（统一命名空间） ====
-const STORAGE_KEY = 'myapp-i18n-locale' // 可替换为项目命名空间
-
-function getInitialLocale(): LocaleType {
-  const saved = localStorage.getItem(STORAGE_KEY) as LocaleType | null
-  if (saved)
-    return saved
-  return navigator.language.toLowerCase().includes('zh') ? 'zh-CN' : 'en'
-}
-
-function saveLocale(lang: LocaleType): void {
-  localStorage.setItem(STORAGE_KEY, lang)
-}
-
-// ==== 创建 i18n 实例 ====
-const messages = mergeUiLibraryMessages(loadLocaleMessages())
-
+/**
+ * 创建 i18n 实例
+ * 从本地存储读取当前语言，如果没有则默认中文
+ */
 export const i18n: I18n = createI18n({
   legacy: false,
-  globalInjection: true,
-  locale: getInitialLocale(),
+  locale:
+    storageLocal().getItem<{ locale: string }>(
+      `${responsiveStorageNameSpace()}locale`,
+    )?.locale ?? 'zh-CN',
   fallbackLocale: 'en',
-  messages,
-  silentFallbackWarn: true,
-  missingWarn: false,
+  messages: localesConfigs,
 })
 
-// 💡 在 legacy: false 模式下, i18n.global 实际是 Composer 类型
-const composer = i18n.global as unknown as Composer
-
-// ==== 对象格式翻译支持 ====
-function transformI18n(message: any = ''): string {
+/**
+ * 国际化转换工具函数
+ * 自动读取 locales/lang 文件夹中的文案
+ */
+export function transformI18n(message: any = ''): string {
   if (!message)
     return ''
 
-  // 对象格式：{ zh-CN: "xxx", en: "yyy" }
+  // 如果 message 是对象格式：{ zh-CN: "xxx", en: "yyy" }
   if (typeof message === 'object') {
-    const value = composer.locale.value
-    return message[value] || ''
+    const locale: string | WritableComputedRef<string> | any
+      = i18n.global.locale
+    return message[locale?.value] || ''
   }
 
-  // 检查 key 是否存在
-  const currentLocale = composer.locale.value as LocaleType
-  const keySet = flatI18nKeys(currentLocale, messages[currentLocale])
-  if (keySet.has(message)) {
-    return composer.t(message)
-  }
+  const key = message.match(/(\S*)\./)?.input
 
-  return message // 如果不存在，原样返回
+  // 嵌套 key 形式
+  if (key && flatI18n('zh-CN').has(key)) {
+    return i18n.global.t.call(i18n.global.locale, message)
+  }
+  // 非嵌套形式
+  else if (!key && Object.hasOwn(siphonI18n('zh-CN'), message)) {
+    return i18n.global.t.call(i18n.global.locale, message)
+  }
+  // 如果不存在，直接返回原文
+  else {
+    return message
+  }
 }
 
-// ==== IDE 提示辅助 ====
+/** 配合 i18n Ally 插件的提示辅助函数 */
 export const $t = (key: string) => key
 
-// ==== API 方法 ====
-export function getLocale(): LocaleType {
-  return composer.locale.value as LocaleType
-}
-
-export function setLocale(lang: LocaleType): void {
-  composer.locale.value = lang
-  saveLocale(lang)
-}
-
-export function getElementPlusLocale(): ElementLocaleType {
-  return getLocale() === 'zh-CN' ? elementZhCn : elementEn
-}
-
-export function installI18n(app: App): void {
+/** 在 Vue 根应用上安装 i18n */
+export function useI18n(app: App) {
   app.use(i18n)
 }
-
-export { transformI18n }

@@ -4,8 +4,8 @@ import type { MenuItemType } from '@/types/menu'
 import { computed } from 'vue'
 import { useRoute } from 'vue-router'
 import BaseMenu from '@/components/Menu/BaseMenu.vue'
-import { useAppStore } from '@/store/app'
 import { useUserStore } from '@/store/auth'
+import { useAppStore } from '@/store/modules/app'
 
 const route = useRoute()
 const appStore = useAppStore()

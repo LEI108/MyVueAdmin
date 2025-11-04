@@ -7,7 +7,7 @@ export type {
   userType,
 } from './types'
 export { getConfig, responsiveStorageNameSpace } from '@/config'
-export { routerArrays } from '@/layouts/types'
+export { routerArrays } from '@/layout/types'
 export { constantMenus, resetRouter, router } from '@/router'
 export {
   ascending,

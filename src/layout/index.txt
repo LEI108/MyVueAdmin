@@ -3,7 +3,7 @@
 import { computed, watch } from 'vue'
 import Sidebar from '@/layouts/components/Sidebar/Sidebar.vue'
 import TopHeader from '@/layouts/components/TopHeader/Topheader.vue'
-import { useAppStore } from '@/store/app'
+import { useAppStore } from '@/store/modules/app'
 
 const appStore = useAppStore()
 

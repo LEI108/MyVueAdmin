@@ -1,410 +1,139 @@
-@use '../base/variables.scss' as *;
-@use '../utils/mixins.scss' as *;
-
+// 根布局：双列
 .login-container {
+  width: 100vw;
+  height: 100vh;
   display: grid;
-  grid-template-columns: 1fr;
-  min-height: 100svh;
-  overflow: hidden;
-
-  @include respond-to(md) {
+  grid-template-columns: 1fr; // 默认单列（移动端）
+  
+  // 平板及以上：双列布局
+  @media (min-width: 768px) {
     grid-template-columns: 2fr 3fr;
+  }
+
+  @media (min-width: 1024px) {
+    grid-template-columns: 2fr 3fr; // 桌面继续保持比例
   }
 }
 
-.login-content {
+// 左列（登录内容）
+.login-box {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   padding: 1.5rem;
-  height: 100svh;
-  
-  @include respond-to(md) {
-    padding: 2rem;
-  }
-  
-  @include respond-to(lg) {
-    padding: 3rem;
-  }
-}
 
-.login-card-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0.5rem 0;
-  margin-bottom: 1rem;
-  
-  @media (max-width: $sm) {
-    padding: 0.5rem;
-  }
-}
-
-.login-avatar {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-
-  .custom-logo-icon {
-    width: 36px;
-    height: 36px;
-    color: $logo-color-light; 
-    
-    @include dark-mode {
-      color: $logo-color-dark; 
-    }
-  }
-
-  .site-title {
-    font-size: 1.5rem;
-    font-weight: 700;
-    letter-spacing: -0.025em;
-    // 使用 SCSS 主色变量
-    color: $primary-color;
-  }
-}
-
-.login-adjust {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-}
-
-.custom-translate-icon {
-  width: 24px;
-  height: 24px;
-  color: $translate-color-light;
-  
-  @include dark-mode {
-    color: $translate-color-dark; 
-  }
-}
-
-.lang-dropdown {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  cursor: pointer;
-  transition: background-color 0.3s;
-  
-  &:hover {
-    background-color: rgba(0, 0, 0, 0.05);
-  }
-  
-  @include dark-mode {
-    &:hover {
-      background-color: rgba(255, 255, 255, 0.1);
-    }
-  }
-}
-
-.login-card-main {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex: 1;
-}
-
-.login-form {
-  width: 100%;
-  max-width: $form-max-width;
-  
-  h1 {
-    font-size: 1.875rem;
-    font-weight: 700;
-    margin-bottom: 0.5rem;
-    letter-spacing: -0.025em;
-    
-    @include dark-mode {
-      color: $text-color-dark;
-    }
-  }
-  
-  p {
-    color: $text-color-light;
-    margin-bottom: 2rem;
-    
-    @include dark-mode {
-      color: $text-color-dark;
-    }
-  }
-}
-
-.custom-form-icon {
-  :deep(.el-input__prefix) {
+  // 顶部区域
+  .login-box-header {
     display: flex;
+    justify-content: space-between;
     align-items: center;
-    justify-content: center;
-  }
-  
-  :deep(.el-icon) {
-    font-size: 22px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    
-    svg {
-      width: 1em;
-      height: 1em;
-      color: #8b8b64;
-      transition: all 0.3s ease;
-    }
-  }
-  
-  &:hover :deep(.el-icon) svg {
-    color: $primary-color;
-    transform: scale(1.1);
-  }
-  
-  @include focus-state {
-    :deep(.el-icon) svg {
-      color: $primary-color;
-      transform: scale(1.15);
-    }
-  }
-  
-  @include dark-mode {
-    :deep(.el-icon) svg {
-      color: $text-color-dark;
-    }
-    
-    &:hover :deep(.el-icon) svg,
-    &:focus-within :deep(.el-icon) svg {
-      color: $dark-primary-color;
-    }
-  }
-}
+    margin-bottom: 1rem;
 
-.remember-forgot {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 1.25rem;
-  width: 100%;
-  
-  @media (max-width: $sm) {
+    // 左侧 logo + 标题
+    .login-avatar {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+
+      .logo-icon {
+        width: 40px;
+        height: 40px;
+        aspect-ratio: 1 / 1;
+      }
+
+      h2 {
+        text-transform: uppercase;
+        margin: 15px 0;
+        color: #999;
+        font:
+          bold 200% Consolas,
+          Monaco,
+          monospace;
+      }
+    }
+
+    // 右侧模式切换 + 国际化
+    .login-adjust {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+  }
+
+  // 表单主体
+  .login-form-info {
+    width: 100%;
+    max-width: 450px;
+    display: flex;
     flex-direction: column;
-    align-items: flex-start;
-    gap: 0.5rem;
+    justify-content: flex-start;
+    margin-inline: auto; // 水平居中
   }
-}
 
-.remember-forgot a {
-  color: $primary-color;
-  text-decoration: none;
-  font-size: 0.875rem;
-  transition: color 0.2s;
-  
-  &:hover {
-    color: $primary-hover-color;
-    text-decoration: underline;
-  }
-  
-  @include dark-mode {
-    color: $dark-primary-color;
-    
-    &:hover {
-      color: $dark-primary-hover;
-    }
-  }
-}
-
-.divider {
-  position: relative;
-  margin: 1.5rem 0;
-  text-align: center;
-  width: 100%;
-  
-  &::before {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 0;
-    right: 0;
-    height: 1px;
-    background-color: $divider-color-light;
-    z-index: 1;
-    
-    @include dark-mode {
-      background-color: $divider-color-dark;
-    }
-  }
-}
-
-.divider-text {
-  position: relative;
-  padding: 0 1rem;
-  background-color: #ffffff;
-  color: #272727;
-  z-index: 2;
-  font-size: 0.875rem;
-  
-  @include dark-mode {
-    background-color: $background-dark;
-    color: $text-color-dark;
-  }
-}
-
-.social-login {
-  display: flex;
-  justify-content: center;
-  gap: 1rem;
-  margin-bottom: 1.5rem;
-  
-  :deep(.el-button) {
-    border-radius: 50%;
-    width: 3rem;
-    height: 3rem;
-    padding: 0;
+  // 底部版权
+  .login-box-footer {
     display: flex;
-    align-items: center;
     justify-content: center;
-    border: 1px solid #e5e7eb;
-    background-color: $social-button-bg-light;
-    transition: background-color 0.3s;
-    
-    @include dark-mode {
-      background-color: $social-button-bg-dark;
-      border-color: $divider-color-dark;
-    }
-    
-    &:hover {
-      background-color: $social-button-hover-bg-light;
-      
-      @include dark-mode {
-        background-color: $social-button-hover-bg-dark;
-      }
-    }
-  }
-  
-  svg {
-    width: $social-icon-size;
-    height: $social-icon-size;
-  }
-  
-  @media (max-width: $sm) {
-    flex-wrap: wrap;
-  }
-}
+    align-items: center;
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+    color: rgba(0, 0, 0, 0.6);
 
-.signup-link {
-  text-align: center;
-  font-size: 0.875rem;
-  color: $text-color-light;
-  
-  @include dark-mode {
-    color: $text-color-dark;
-  }
-  
-  a {
-    color: $primary-color;
-    text-decoration: none;
-    font-weight: 500;
-    margin-left: 0.25rem;
-    transition: color 0.2s;
-    
-    &:hover {
-      color: $primary-hover-color;
-      text-decoration: underline;
-    }
-    
-    @include dark-mode {
-      color: $dark-primary-color;
-      
-      &:hover {
-        color: $dark-primary-hover;
-      }
+    @media (max-width: 480px) {
+      font-size: 0.75rem; // 小屏稍微缩小
     }
   }
 }
 
-.login-card-footer {
-  text-align: center;
-  padding: 1.5rem 0 0.5rem;
-  color: $text-color-light;
-  font-size: 0.875rem;
-  
-  @include dark-mode {
-    color: $text-color-dark;
-  }
-}
-
-.login-illustration-container {
+// 右列插画
+.login-illustration {
   display: none;
-  
-  @include respond-to(md) {
+
+  @media (min-width: 768px) {
     display: flex;
+    padding: 1.5rem;
     align-items: center;
     justify-content: center;
-    height: 100%;
-    background: linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%);
+    background: linear-gradient(135deg, #4ba6d0 0%, #0284c7 100%);
     border-radius: 1.5rem 0 0 1.5rem;
   }
+}
 
-  @include dark-mode {
-    background: $background-dark;
-    border-radius: 0;
+// ==========================
+// 响应式细化断点
+// ==========================
+
+// 小屏手机（<=480px）
+@media (max-width: 480px) {
+  .login-form-info {
+    max-width: 300px;
   }
 }
 
-.login-illustration {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  height: 100%;
-  width: 100%;
-  text-align: center;
-  
-  svg {
-    width: 100px;
-    height: 100px;
-    margin-bottom: 1.5rem;
-    opacity: 0.9;
-  }
-  
-  h2 {
-    font-size: 2rem;
-    font-weight: 700;
-    margin-bottom: 1rem;
-    color: white;
-  }
-  
-  p {
-    font-size: 1.125rem;
-    opacity: 0.9;
-    line-height: 1.6;
-    color: rgba(255, 255, 255, 0.9);
+// 平板纵向（481px ~ 767px）
+@media (min-width: 481px) and (max-width: 767px) {
+  .login-form-info {
+    max-width: 360px;
   }
 }
 
-// 暗黑模式容器
-.dark {
-  .login-container {
-    background-color: $background-dark;
-    color: #e2e8f0;
-  }
-  
-  .login-content {
-    background-color: $background-dark;
-  }
-
-  .login-illustration {
-    background-color: #22365f;
+// 平板横向（768px ~ 1023px）
+@media (min-width: 768px) and (max-width: 1023px) {
+  .login-form-info {
+    max-width: 420px;
   }
 }
 
-.sr-only {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  margin: -1px;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  white-space: nowrap;
-  border-width: 0;
+// 普通桌面（1024px ~ 1439px）
+@media (min-width: 1024px) and (max-width: 1439px) {
+  .login-form-info {
+    max-width: 450px;
+  }
+}
+
+// 超大桌面（>=1440px）
+@media (min-width: 1440px) {
+  .login-form-info {
+    max-width: 500px;
+  }
 }

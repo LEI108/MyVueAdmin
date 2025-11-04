@@ -1,6 +1,6 @@
 import { $t } from '@/plugins/i18n'
 
-const Layout = () => import('@/layout/index.vue')
+const Layout = () => import('@/layout/index.txt')
 
 export default [
   {

@@ -3,8 +3,8 @@
 import { ElMessage } from 'element-plus'
 import { reactive, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { useAppStore } from '@/store/app'
 import { useUserStore } from '@/store/auth'
+import { useAppStore } from '@/store/modules/app'
 
 // i18n
 const { t } = useI18n()

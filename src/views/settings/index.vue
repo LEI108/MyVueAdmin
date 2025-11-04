@@ -1,6 +1,6 @@
 <!-- src/views/settings/index.vue -->
 <script setup lang="ts">
-import { useAppStore } from '@/store/app'
+import { useAppStore } from '@/store/modules/app'
 import SettingsMobile from './components/SettingsMobile.vue'
 import SettingsDialog from './compu=mponents/SettingsDialog.vue'
 
