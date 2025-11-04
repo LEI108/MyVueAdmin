@@ -204,7 +204,7 @@ watch(loginDay, (value) => {
               <el-input
                 v-model="ruleForm.username"
                 clearable
-                :placeholder="t('login.usernameRequired')"
+                :placeholder="t('login.username')"
                 :prefix-icon="useRenderIcon(User)"
               />
             </el-form-item>
@@ -216,7 +216,7 @@ watch(loginDay, (value) => {
                 v-model="ruleForm.password"
                 clearable
                 show-password
-                :placeholder="t('login.passwordRequired')"
+                :placeholder="t('login.password')"
                 :prefix-icon="useRenderIcon(Lock)"
               />
             </el-form-item>
@@ -227,7 +227,7 @@ watch(loginDay, (value) => {
               <el-input
                 v-model="ruleForm.verifyCode"
                 clearable
-                :placeholder="t('login.verifyCodeRequired')"
+                :placeholder="t('login.verifyCode')"
                 :prefix-icon="useRenderIcon(Keyhole)"
               >
                 <template #append>
@@ -257,10 +257,10 @@ watch(loginDay, (value) => {
                       <option value="7">7</option>
                       <option value="30">30</option>
                     </select>
-                    {{ t('login.remenberMe') }}
+                    {{ t('login.rememberMe') }}
                     <IconifyIconOffline
                       v-tippy="{
-                        content: t('login.remenberMe'),
+                        content: t('login.rememberInfo'),
                         placement: 'top',
                       }"
                       :icon="Info"

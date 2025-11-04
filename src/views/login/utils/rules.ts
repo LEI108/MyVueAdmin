@@ -17,10 +17,10 @@ const loginRules = reactive<FormRules>({
     {
       validator: (rule, value, callback) => {
         if (value === '') {
-          callback(new Error(transformI18n($t('login.purePassWordReg'))))
+          callback(new Error(transformI18n($t('login.passWordReg'))))
         }
         else if (!REGEXP_PWD.test(value)) {
-          callback(new Error(transformI18n($t('login.purePassWordRuleReg'))))
+          callback(new Error(transformI18n($t('login.passWordRuleReg'))))
         }
         else {
           callback()
@@ -33,11 +33,11 @@ const loginRules = reactive<FormRules>({
     {
       validator: (rule, value, callback) => {
         if (value === '') {
-          callback(new Error(transformI18n($t('login.pureVerifyCodeReg'))))
+          callback(new Error(transformI18n($t('login.verifyCodeReg'))))
         }
         else if (useUserStoreHook().verifyCode !== value) {
           callback(
-            new Error(transformI18n($t('login.pureVerifyCodeCorrectReg'))),
+            new Error(transformI18n($t('login.verifyCodeCorrectReg'))),
           )
         }
         else {
@@ -55,10 +55,10 @@ const phoneRules = reactive<FormRules>({
     {
       validator: (rule, value, callback) => {
         if (value === '') {
-          callback(new Error(transformI18n($t('login.purePhoneReg'))))
+          callback(new Error(transformI18n($t('login.phoneReg'))))
         }
         else if (!isPhone(value)) {
-          callback(new Error(transformI18n($t('login.purePhoneCorrectReg'))))
+          callback(new Error(transformI18n($t('login.phoneCorrectReg'))))
         }
         else {
           callback()
@@ -71,10 +71,10 @@ const phoneRules = reactive<FormRules>({
     {
       validator: (rule, value, callback) => {
         if (value === '') {
-          callback(new Error(transformI18n($t('login.pureVerifyCodeReg'))))
+          callback(new Error(transformI18n($t('login.verifyCodeReg'))))
         }
         else if (!REGEXP_SIX.test(value)) {
-          callback(new Error(transformI18n($t('login.pureVerifyCodeSixReg'))))
+          callback(new Error(transformI18n($t('login.verifyCodeSixReg'))))
         }
         else {
           callback()
@@ -91,10 +91,10 @@ const updateRules = reactive<FormRules>({
     {
       validator: (rule, value, callback) => {
         if (value === '') {
-          callback(new Error(transformI18n($t('login.purePhoneReg'))))
+          callback(new Error(transformI18n($t('login.phoneReg'))))
         }
         else if (!isPhone(value)) {
-          callback(new Error(transformI18n($t('login.purePhoneCorrectReg'))))
+          callback(new Error(transformI18n($t('login.phoneCorrectReg'))))
         }
         else {
           callback()
@@ -107,10 +107,10 @@ const updateRules = reactive<FormRules>({
     {
       validator: (rule, value, callback) => {
         if (value === '') {
-          callback(new Error(transformI18n($t('login.pureVerifyCodeReg'))))
+          callback(new Error(transformI18n($t('login.verifyCodeReg'))))
         }
         else if (!REGEXP_SIX.test(value)) {
-          callback(new Error(transformI18n($t('login.pureVerifyCodeSixReg'))))
+          callback(new Error(transformI18n($t('login.verifyCodeSixReg'))))
         }
         else {
           callback()
@@ -123,10 +123,10 @@ const updateRules = reactive<FormRules>({
     {
       validator: (rule, value, callback) => {
         if (value === '') {
-          callback(new Error(transformI18n($t('login.purePassWordReg'))))
+          callback(new Error(transformI18n($t('login.passWordReg'))))
         }
         else if (!REGEXP_PWD.test(value)) {
-          callback(new Error(transformI18n($t('login.purePassWordRuleReg'))))
+          callback(new Error(transformI18n($t('login.passWordRuleReg'))))
         }
         else {
           callback()

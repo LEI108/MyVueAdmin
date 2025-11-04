@@ -1,6 +1,13 @@
 export default {
   login: {
     login: 'Login',
+    back: 'Back',
+    test: 'Mock Test',
+    tip: 'After scanning the code, click "Confirm" to complete the login',
+    sure: 'Sure Password',
+    username: 'Username',
+    password: 'Password',
+    verifyCode: 'VerifyCode',
     phoneLogin: 'Phone Login',
     qrCodeLogin: 'QR Code Login',
     register: 'Register',
@@ -9,10 +16,8 @@ export default {
     githubLogin: 'GitHub Login',
     loginSuccess: 'Login Successful',
     loginFailed: 'Login Failed',
-    usernameRequired: 'Username is required',
-    passwordRequired: 'Password is required',
-    verifyCodeRequired: 'Verification code is required',
-    remenberMe: 'Remember Me',
+    rememberMe: 'days no need to login',
+    rememberInfo: 'After checking and logging in, will automatically log in to the system without entering your username and password within the specified number of days.',
     forgetPassword: 'Forget Password?',
     thirdPartyLogin: 'Third-Party Login',
     registerSuccess: 'Regist Success',
@@ -32,6 +37,10 @@ export default {
     passWordSureReg: 'Please enter confirm password',
     passWordDifferentReg: 'The two passwords do not match!',
     passWordUpdateReg: 'Password has been updated',
+    phone: 'Phone',
+    smsVerifyCode: 'SMS VerifyCode',
+    definite: 'Definite',
+
   },
 
 }

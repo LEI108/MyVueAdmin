@@ -27,11 +27,11 @@ const repeatPasswordRule = [
   {
     validator: (rule, value, callback) => {
       if (value === '') {
-        callback(new Error(transformI18n($t('login.purePassWordSureReg'))))
+        callback(new Error(transformI18n($t('login.passWordSureReg'))))
       }
       else if (ruleForm.password !== value) {
         callback(
-          new Error(transformI18n($t('login.purePassWordDifferentReg'))),
+          new Error(transformI18n($t('login.passWordDifferentReg'))),
         )
       }
       else {
@@ -50,7 +50,7 @@ async function onUpdate(formEl: FormInstance | undefined) {
     if (valid) {
       // 模拟请求，需根据实际开发进行修改
       setTimeout(() => {
-        message(transformI18n($t('login.purePassWordUpdateReg')), {
+        message(transformI18n($t('login.passWordUpdateReg')), {
           type: 'success',
         })
         loading.value = false
@@ -80,7 +80,7 @@ function onBack() {
         <el-input
           v-model="ruleForm.phone"
           clearable
-          :placeholder="t('login.purePhone')"
+          :placeholder="t('login.phone')"
           :prefix-icon="useRenderIcon(Iphone)"
         />
       </el-form-item>
@@ -92,7 +92,7 @@ function onBack() {
           <el-input
             v-model="ruleForm.verifyCode"
             clearable
-            :placeholder="t('login.pureSmsVerifyCode')"
+            :placeholder="t('login.smsVerifyCode')"
             :prefix-icon="useRenderIcon(Keyhole)"
           />
           <el-button
@@ -102,8 +102,8 @@ function onBack() {
           >
             {{
               text.length > 0
-                ? text + t("login.pureInfo")
-                : t("login.pureGetVerifyCode")
+                ? text + t("login.info")
+                : t("login.getVerifyCode")
             }}
           </el-button>
         </div>
@@ -116,7 +116,7 @@ function onBack() {
           v-model="ruleForm.password"
           clearable
           show-password
-          :placeholder="t('login.purePassword')"
+          :placeholder="t('login.password')"
           :prefix-icon="useRenderIcon(Lock)"
         />
       </el-form-item>
@@ -128,7 +128,7 @@ function onBack() {
           v-model="ruleForm.repeatPassword"
           clearable
           show-password
-          :placeholder="t('login.pureSure')"
+          :placeholder="t('login.sure')"
           :prefix-icon="useRenderIcon(Lock)"
         />
       </el-form-item>
@@ -143,7 +143,7 @@ function onBack() {
           :loading="loading"
           @click="onUpdate(ruleFormRef)"
         >
-          {{ t("login.pureDefinite") }}
+          {{ t("login.definite") }}
         </el-button>
       </el-form-item>
     </Motion>
@@ -151,7 +151,7 @@ function onBack() {
     <Motion :delay="300">
       <el-form-item>
         <el-button class="w-full" size="default" @click="onBack">
-          {{ t("login.pureBack") }}
+          {{ t("login.back") }}
         </el-button>
       </el-form-item>
     </Motion>
