@@ -1,6 +1,8 @@
 // src/locales/lang/en/menus.ts
 export default {
   // 菜单项
+
+  home: 'Home',
   dashboard: 'Dashboard',
   overview: 'Overview',
   realtime: 'Realtime',

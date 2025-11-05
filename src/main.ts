@@ -24,8 +24,8 @@ import { getPlatformConfig } from './config'
 import * as directives from './directives'
 
 import router from './router'
-import './styles/main.scss'
-import './styles/layouts/tailwind.css'
+import './styles/index.scss'
+import './styles/utils/tailwind.css'
 
 import 'element-plus/dist/index.css'
 // 全局注册vue-tippy

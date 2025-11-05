@@ -10,7 +10,7 @@ export function injectResponsiveStorage(app: App, config: PlatformConfigs) {
     {
       // 国际化 默认中文zh
       locale: Storage.getData('locale', nameSpace) ?? {
-        locale: config.Locale ?? 'zh',
+        locale: config.Locale ?? 'zh-CN',
       },
       // layout模式以及主题
       layout: Storage.getData('layout', nameSpace) ?? {

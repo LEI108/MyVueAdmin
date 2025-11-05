@@ -9,6 +9,7 @@ export default {
     login: '登录',
     loginFailed: '登录失败',
     loginSuccess: '登录成功',
+    password: '密码',
     passWordDifferentReg: '两次输入的密码不一致！',
     passWordReg: '请输入密码',
     passWordRuleReg: '密码格式应为8-18位任意组合',

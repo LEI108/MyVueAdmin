@@ -1,5 +1,6 @@
 // src/locales/lang/zh-CN/menus.ts
 export default {
+  home: '首页',
   // 菜单项
   dashboard: '数据看板',
   overview: '总览',

@@ -159,11 +159,11 @@ watch(loginDay, (value) => {
             <template #dropdown>
               <el-dropdown-menu class="translation">
                 <el-dropdown-item
-                  :style="getDropdownItemStyle(locale, 'zh')"
-                  class="dark:text-white!" :class="[getDropdownItemClass(locale, 'zh')]"
+                  :style="getDropdownItemStyle(locale, 'zh-CN')"
+                  class="dark:text-white!" :class="[getDropdownItemClass(locale, 'zh-CN')]"
                   @click="translationCh"
                 >
-                  <IconifyIconOffline v-show="locale === 'zh'" :icon="Check" />
+                  <IconifyIconOffline v-show="locale === 'zh-CN'" :icon="Check" />
                   简体中文
                 </el-dropdown-item>
                 <el-dropdown-item

@@ -26,7 +26,7 @@ const include = [
   // 'jsbarcode',
   // 'codemirror',
   'pinyin-pro',
-  // 'sortablejs',
+  'sortablejs',
   // 'swiper/vue',
   // 'mint-filter',
   // 'highlight.js',
