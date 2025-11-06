@@ -49,6 +49,7 @@ import PhTranslate from '~icons/ph/translate?raw'
 import PhUserCircle from '~icons/ph/user-circle?raw'
 import PhUserSquare from '~icons/ph/user-square?raw'
 import PhUser from '~icons/ph/user?raw'
+import PhUsersThree from '~icons/ph/users-three?raw'
 import PhWarning from '~icons/ph/warning?raw'
 import PhX from '~icons/ph/x?raw'
 
@@ -131,6 +132,7 @@ const icons = [
   ['ph/user-square', PhUserSquare],
   ['ph/warning', PhWarning],
   ['ph/x', PhX],
+  ['ph/users-three', PhUsersThree],
   // Element Plus Icon: https://github.com/element-plus/element-plus-icons
   ['ep/menu', EpMenu],
   ['ep/edit', EpEdit],

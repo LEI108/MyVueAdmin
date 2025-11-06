@@ -1,16 +1,17 @@
 import type { Directive } from 'vue'
+import Table from '@pureadmin/table'
 import { MotionPlugin } from '@vueuse/motion'
 import { createApp } from 'vue'
 import VueTippy from 'vue-tippy'
 // 全局注册按钮级别权限组件
 import { Auth } from '@/components/ReAuth/index'
 import { Perms } from '@/components/RePerms/index'
+import { useEcharts } from '@/plugins/echarts'
 import { useElementPlus } from '@/plugins/elementPlus'
 import { useI18n } from '@/plugins/i18n'
+import { useVxeTable } from '@/plugins/vxeTable'
 import { setupStore } from '@/store'
 import { injectResponsiveStorage } from '@/utils/responsive'
-// import { useEcharts } from "@/plugins/echarts";
-
 import App from './App.vue'
 // 全局注册@iconify/vue图标库
 import {
@@ -26,6 +27,7 @@ import * as directives from './directives'
 import router from './router'
 import './styles/index.scss'
 import './styles/utils/tailwind.css'
+import './styles/base/normalize.css'
 
 import 'element-plus/dist/index.css'
 // 全局注册vue-tippy
@@ -52,9 +54,9 @@ getPlatformConfig(app).then(async (config) => {
     .use(MotionPlugin)
     .use(useI18n)
     .use(useElementPlus)
-    // .use(Table)
-    // .use(useVxeTable)
+    .use(Table)
+    .use(useVxeTable)
     // .use(PureDescriptions)
-    // .use(useEcharts);
+    .use(useEcharts)
   app.mount('#app')
 })

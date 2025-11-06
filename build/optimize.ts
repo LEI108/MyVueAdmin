@@ -18,7 +18,7 @@ const include = [
   // 'intro.js',
   'vue-i18n',
   // 'deep-chat',
-  // 'vxe-table',
+  'vxe-table',
   'vue-types',
   'js-cookie',
   'vue-tippy',

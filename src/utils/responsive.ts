@@ -24,8 +24,6 @@ export function injectResponsiveStorage(app: App, config: PlatformConfigs) {
       },
       // 系统配置-界面显示
       configure: Storage.getData('configure', nameSpace) ?? {
-        grey: config.Grey ?? false,
-        weak: config.Weak ?? false,
         hideTabs: config.HideTabs ?? false,
         hideFooter: config.HideFooter ?? true,
         showLogo: config.ShowLogo ?? true,

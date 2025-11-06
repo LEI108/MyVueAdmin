@@ -1,31 +1,44 @@
-// src/router/modules/home/profile.ts
 import { $t } from '@/plugins/i18n'
 import { RouteRank } from '../enums'
 
 export default {
   path: '/system',
-  redirect: '/system/list',
+  redirect: '/system/users',
   meta: {
-    icon: 'User',
-    title: $t('menus.user'),
-    rank: RouteRank.USER_MANAGEMENT,
+    icon: 'ph/users-three',
+    title: $t('menus.systemManagement'),
+    rank: RouteRank.USER_AUTH_MANAGEMENT,
   },
   children: [
     {
-      path: '/system/list',
-      name: 'UserList',
-      component: () => import('@/views/system/list/index.vue'),
-      meta: {
-        title: $t('menus.list'),
-      },
+      path: '/system/users',
+      name: 'UserManagement',
+      component: () => import('@/views/system/users/index.vue'),
+      meta: { title: $t('menus.userManagement') },
+    },
+    {
+      path: '/system/departments',
+      name: 'DepartmentManagement',
+      component: () => import('@/views/system/dept/index.vue'),
+      meta: { title: $t('menus.departmentManagement') },
     },
     {
       path: '/system/roles',
-      name: 'RoleManagement',
+      name: 'RolePermission',
       component: () => import('@/views/system/roles/index.vue'),
-      meta: {
-        title: $t('menus.roles'),
-      },
+      meta: { title: $t('menus.rolePermission') },
+    },
+    {
+      path: '/system/logs',
+      name: 'OperationLogs',
+      component: () => import('@/views/system/logs/index.vue'),
+      meta: { title: $t('menus.operationLogs') },
+    },
+    {
+      path: '/system/security',
+      name: 'SecuritySettings',
+      component: () => import('@/views/system/security/index.vue'),
+      meta: { title: $t('menus.securitySettings') },
     },
   ],
 } satisfies RouteConfigsTable

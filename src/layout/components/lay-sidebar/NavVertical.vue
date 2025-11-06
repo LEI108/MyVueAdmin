@@ -8,6 +8,7 @@ import { usePermissionStoreHook } from '@/store/modules/permission'
 import { emitter } from '@/utils/mitt'
 import LaySidebarCenterCollapse from '../lay-sidebar/components/SidebarCenterCollapse.vue'
 import LaySidebarItem from '../lay-sidebar/components/SidebarItem.vue'
+import LaySidebarLeftCollapse from '../lay-sidebar/components/SidebarLeftCollapse.vue'
 import LaySidebarLogo from '../lay-sidebar/components/SidebarLogo.vue'
 
 const route = useRoute()

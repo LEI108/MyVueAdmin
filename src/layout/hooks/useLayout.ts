@@ -32,11 +32,9 @@ export function useLayout() {
         overallStyle: $config?.OverallStyle ?? 'light',
       }
     }
-    /** 灰色模式、色弱模式、隐藏标签页 */
+    /** 隐藏标签页 */
     if (!$storage.configure) {
       $storage.configure = {
-        grey: $config?.Grey ?? false,
-        weak: $config?.Weak ?? false,
         hideTabs: $config?.HideTabs ?? false,
         hideFooter: $config.HideFooter ?? true,
         showLogo: $config?.ShowLogo ?? true,

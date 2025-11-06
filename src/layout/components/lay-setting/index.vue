@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { OptionsType } from '@/components/ReSegmented/index'
-import { debounce, isNumber, useDark, useGlobal } from '@pureadmin/utils'
+import { useDark, useGlobal } from '@pureadmin/utils'
 import {
   computed,
   nextTick,
@@ -9,65 +9,44 @@ import {
   reactive,
   ref,
   unref,
-  watch,
 } from 'vue'
 import { useI18n } from 'vue-i18n'
 import Check from '~icons/ep/check'
-import LeftArrow from '~icons/ri/arrow-left-s-line?width=20&height=20'
-import RightArrow from '~icons/ri/arrow-right-s-line?width=20&height=20'
 import DarkIcon from '@/assets/svg/moon.svg?component'
 import DayIcon from '@/assets/svg/sun.svg?component'
 import SystemIcon from '@/assets/svg/system.svg?component'
 import Segmented from '@/components/ReSegmented/index'
 
 import { useDataThemeChange } from '@/layout/hooks/useDataThemeChange'
-import { useNav } from '@/layout/hooks/useNav'
-import { useAppStoreHook } from '@/store/modules/app'
 import { useMultiTagsStoreHook } from '@/store/modules/multiTags'
 import { emitter } from '@/utils/mitt'
 import LayPanel from '../lay-panel/index.vue'
 
 const { t } = useI18n()
-const { device } = useNav()
 const { isDark } = useDark()
 const { $storage } = useGlobal<GlobalPropertiesApi>()
-
-const mixRef = ref()
-const verticalRef = ref()
-const horizontalRef = ref()
 
 const {
   dataTheme,
   overallStyle,
   layoutTheme,
   themeColors,
-  toggleClass,
   dataThemeChange,
   setLayoutThemeColor,
 } = useDataThemeChange()
 
-/* body添加layout属性，作用于src/style/sidebar.scss */
-if (unref(layoutTheme)) {
-  const layout = unref(layoutTheme).layout
-  const theme = unref(layoutTheme).theme
-  document.documentElement.setAttribute('data-theme', theme)
-  setLayoutModel(layout)
-}
-
 /** 默认灵动模式 */
 const markValue = ref($storage.configure?.showModel ?? 'smart')
 
+// 保留 logo 相关
 const logoVal = ref($storage.configure?.showLogo ?? true)
 
 const settings = reactive({
-  greyVal: $storage.configure.grey,
-  weakVal: $storage.configure.weak,
   tabsVal: $storage.configure.hideTabs,
   showLogo: $storage.configure.showLogo,
   showModel: $storage.configure.showModel,
   hideFooter: $storage.configure.hideFooter,
   multiTagsCache: $storage.configure.multiTagsCache,
-  stretch: $storage.configure.stretch,
 })
 
 const getThemeColorStyle = computed(() => {
@@ -87,20 +66,6 @@ function storageConfigureChange<T>(key: string, val: T): void {
   const storageConfigure = $storage.configure
   storageConfigure[key] = val
   $storage.configure = storageConfigure
-}
-
-/** 灰色模式设置 */
-function greyChange(value): void {
-  const htmlEl = document.querySelector('html')
-  toggleClass(settings.greyVal, 'html-grey', htmlEl)
-  storageConfigureChange('grey', value)
-}
-
-/** 色弱模式设置 */
-function weekChange(value): void {
-  const htmlEl = document.querySelector('html')
-  toggleClass(settings.weakVal, 'html-weakness', htmlEl)
-  storageConfigureChange('weak', value)
 }
 
 /** 隐藏标签页设置 */
@@ -136,38 +101,6 @@ function logoChange() {
     ? storageConfigureChange('showLogo', true)
     : storageConfigureChange('showLogo', false)
   emitter.emit('logoChange', unref(logoVal))
-}
-
-function setFalse(Doms): any {
-  Doms.forEach((v) => {
-    toggleClass(false, 'is-select', unref(v))
-  })
-}
-
-/** 页宽 */
-const stretchTypeOptions = computed<Array<OptionsType>>(() => {
-  return [
-    {
-      label: t('panel.pureStretchFixed'),
-      tip: t('panel.pureStretchFixedTip'),
-      value: 'fixed',
-    },
-    {
-      label: t('panel.pureStretchCustom'),
-      tip: t('panel.pureStretchCustomTip'),
-      value: 'custom',
-    },
-  ]
-})
-
-function setStretch(value) {
-  settings.stretch = value
-  storageConfigureChange('stretch', value)
-}
-
-function stretchTypeChange({ option }) {
-  const { value } = option
-  value === 'custom' ? setStretch(1440) : setStretch(false)
 }
 
 /** 主题色 激活选择项 */
@@ -241,42 +174,6 @@ const markOptions = computed<Array<OptionsType>>(() => {
   ]
 })
 
-/** 设置导航模式 */
-function setLayoutModel(layout: string) {
-  layoutTheme.value.layout = layout
-  window.document.body.setAttribute('layout', layout)
-  $storage.layout = {
-    layout,
-    theme: layoutTheme.value.theme,
-    darkMode: $storage.layout?.darkMode,
-    sidebarStatus: $storage.layout?.sidebarStatus,
-    epThemeColor: $storage.layout?.epThemeColor,
-    themeColor: $storage.layout?.themeColor,
-    overallStyle: $storage.layout?.overallStyle,
-  }
-  useAppStoreHook().setLayout(layout)
-}
-
-watch($storage, ({ layout }) => {
-  switch (layout.layout) {
-    case 'vertical':
-      toggleClass(true, 'is-select', unref(verticalRef))
-      debounce(setFalse([horizontalRef]), 50)
-      debounce(setFalse([mixRef]), 50)
-      break
-    case 'horizontal':
-      toggleClass(true, 'is-select', unref(horizontalRef))
-      debounce(setFalse([verticalRef]), 50)
-      debounce(setFalse([mixRef]), 50)
-      break
-    case 'mix':
-      toggleClass(true, 'is-select', unref(mixRef))
-      debounce(setFalse([verticalRef]), 50)
-      debounce(setFalse([horizontalRef]), 50)
-      break
-  }
-})
-
 const mediaQueryList = window.matchMedia('(prefers-color-scheme: dark)')
 
 /** 根据操作系统主题设置平台整体风格 */
@@ -307,10 +204,6 @@ onBeforeMount(() => {
   /* 初始化系统配置 */
   nextTick(() => {
     watchSystemThemeChange()
-    settings.greyVal
-    && document.querySelector('html')?.classList.add('html-grey')
-    settings.weakVal
-    && document.querySelector('html')?.classList.add('html-weakness')
     settings.tabsVal && tagsChange()
     settings.hideFooter && hideFooterChange()
   })
@@ -363,92 +256,6 @@ onUnmounted(() => removeMatchMedia)
         </li>
       </ul>
 
-      <p class="mt-5!" :class="[pClass]">
-        {{ t("panel.pureLayoutModel") }}
-      </p>
-      <ul class="pure-theme">
-        <li
-          ref="verticalRef"
-          v-tippy="{
-            content: t('panel.pureVerticalTip'),
-            zIndex: 41000,
-          }"
-          :class="layoutTheme.layout === 'vertical' ? 'is-select' : ''"
-          @click="setLayoutModel('vertical')"
-        >
-          <div />
-          <div />
-        </li>
-        <li
-          v-if="device !== 'mobile'"
-          ref="horizontalRef"
-          v-tippy="{
-            content: t('panel.pureHorizontalTip'),
-            zIndex: 41000,
-          }"
-          :class="layoutTheme.layout === 'horizontal' ? 'is-select' : ''"
-          @click="setLayoutModel('horizontal')"
-        >
-          <div />
-          <div />
-        </li>
-        <li
-          v-if="device !== 'mobile'"
-          ref="mixRef"
-          v-tippy="{
-            content: t('panel.pureMixTip'),
-            zIndex: 41000,
-          }"
-          :class="layoutTheme.layout === 'mix' ? 'is-select' : ''"
-          @click="setLayoutModel('mix')"
-        >
-          <div />
-          <div />
-        </li>
-      </ul>
-
-      <span v-if="useAppStoreHook().getViewportWidth > 1280">
-        <p class="mt-5!" :class="[pClass]">{{ t("panel.pureStretch") }}</p>
-        <Segmented
-          resize
-          class="mb-2 select-none"
-          :model-value="isNumber(settings.stretch) ? 1 : 0"
-          :options="stretchTypeOptions"
-          @change="stretchTypeChange"
-        />
-        <el-input-number
-          v-if="isNumber(settings.stretch)"
-          v-model="settings.stretch as number"
-          :min="1280"
-          :max="1600"
-          controls-position="right"
-          @change="value => setStretch(value)"
-        />
-        <button
-          v-else
-          v-ripple="{ class: 'text-gray-300' }"
-          class="bg-transparent flex-c w-full h-20 rounded-md border border-[var(--pure-border-color)]"
-          @click="setStretch(!settings.stretch)"
-        >
-          <div
-            class="flex-bc transition-all duration-300"
-            :class="[settings.stretch ? 'w-[24%]' : 'w-[50%]']"
-            style="color: var(--el-color-primary)"
-          >
-            <IconifyIconOffline
-              :icon="settings.stretch ? RightArrow : LeftArrow"
-            />
-            <div
-              class="grow border-0 border-b border-dashed"
-              style="border-color: var(--el-color-primary)"
-            />
-            <IconifyIconOffline
-              :icon="settings.stretch ? LeftArrow : RightArrow"
-            />
-          </div>
-        </button>
-      </span>
-
       <p class="mt-4!" :class="[pClass]">
         {{ t("panel.pureTagsStyle") }}
       </p>
@@ -464,26 +271,6 @@ onUnmounted(() => removeMatchMedia)
         {{ t("panel.pureInterfaceDisplay") }}
       </p>
       <ul class="setting">
-        <li>
-          <span class="dark:text-white">{{ t("panel.pureGreyModel") }}</span>
-          <el-switch
-            v-model="settings.greyVal"
-            inline-prompt
-            :active-text="t('buttons.pureOpenText')"
-            :inactive-text="t('buttons.pureCloseText')"
-            @change="greyChange"
-          />
-        </li>
-        <li>
-          <span class="dark:text-white">{{ t("panel.pureWeakModel") }}</span>
-          <el-switch
-            v-model="settings.weakVal"
-            inline-prompt
-            :active-text="t('buttons.pureOpenText')"
-            :inactive-text="t('buttons.pureCloseText')"
-            @change="weekChange"
-          />
-        </li>
         <li>
           <span class="dark:text-white">{{ t("panel.pureHiddenTags") }}</span>
           <el-switch
@@ -541,7 +328,6 @@ onUnmounted(() => removeMatchMedia)
 
 :deep(.el-switch__core) {
   --el-switch-off-color: var(--pure-switch-off-color);
-
   min-width: 36px;
   height: 18px;
 }
@@ -562,74 +348,6 @@ onUnmounted(() => removeMatchMedia)
 
     &:nth-child(1) {
       border: 1px solid #ddd;
-    }
-  }
-}
-
-.pure-theme {
-  display: flex;
-  gap: 12px;
-
-  li {
-    position: relative;
-    width: 46px;
-    height: 36px;
-    overflow: hidden;
-    cursor: pointer;
-    background: #f0f2f5;
-    border-radius: 4px;
-    box-shadow: 0 1px 2.5px 0 rgb(0 0 0 / 18%);
-
-    &:nth-child(1) {
-      div {
-        &:nth-child(1) {
-          width: 30%;
-          height: 100%;
-          background: #1b2a47;
-        }
-
-        &:nth-child(2) {
-          position: absolute;
-          top: 0;
-          right: 0;
-          width: 70%;
-          height: 30%;
-          background: #fff;
-          box-shadow: 0 0 1px #888;
-        }
-      }
-    }
-
-    &:nth-child(2) {
-      div {
-        &:nth-child(1) {
-          width: 100%;
-          height: 30%;
-          background: #1b2a47;
-          box-shadow: 0 0 1px #888;
-        }
-      }
-    }
-
-    &:nth-child(3) {
-      div {
-        &:nth-child(1) {
-          width: 100%;
-          height: 30%;
-          background: #1b2a47;
-          box-shadow: 0 0 1px #888;
-        }
-
-        &:nth-child(2) {
-          position: absolute;
-          bottom: 0;
-          left: 0;
-          width: 30%;
-          height: 70%;
-          background: #fff;
-          box-shadow: 0 0 1px #888;
-        }
-      }
     }
   }
 }

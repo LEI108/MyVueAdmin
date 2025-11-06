@@ -1,27 +1,26 @@
-// src/router/enums.ts
 /**
  * 路由排序枚举 - 确保菜单项按正确顺序显示
  */
 export const RouteRank = {
   HOME: 0,
+
+  // 1. 数据看板
   DASHBOARD: 10,
 
-  // 光伏板管理
-  SOLAR_PANEL_MANAGEMENT: 20,
+  // 2. 数据分析与报表
+  DATA_ANALYSIS: 20,
 
-  // 实时监控
-  REALTIME_MONITORING: 30,
+  // 3. 设备运维管理
+  DEVICE_MAINTENANCE: 30,
 
-  // 数据分析
-  DATA_REPORTS: 40,
+  // 4. 告警管理
+  ALARM_MANAGEMENT: 40,
 
-  // 告警系统
-  ALARM_MANAGEMENT: 50,
+  // 5. 营收管理
+  REVENUE_MANAGEMENT: 50,
 
-  // 运维管理
-  MAINTENANCE_MANAGEMENT: 60,
+  // 6. 用户与权限管理
+  USER_AUTH_MANAGEMENT: 60,
 
-  // 用户与权限
-  USER_MANAGEMENT: 70,
-
+  TEST: 100,
 } as const

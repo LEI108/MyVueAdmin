@@ -94,8 +94,6 @@ declare global {
     Theme?: string
     DarkMode?: boolean
     OverallStyle?: string
-    Grey?: boolean
-    Weak?: boolean
     HideTabs?: boolean
     HideFooter?: boolean
     Stretch?: boolean | number
@@ -133,8 +131,6 @@ declare global {
     layout?: string
     theme?: string
     darkMode?: boolean
-    grey?: boolean
-    weak?: boolean
     hideTabs?: boolean
     hideFooter?: boolean
     sidebarStatus?: boolean
@@ -172,8 +168,6 @@ declare global {
       overallStyle?: string
     }
     configure: {
-      grey?: boolean
-      weak?: boolean
       hideTabs?: boolean
       hideFooter?: boolean
       showLogo?: boolean

@@ -115,12 +115,10 @@ export function useDataThemeChange() {
   function onReset() {
     removeToken()
     storageLocal().clear()
-    const { Grey, Weak, MultiTagsCache, EpThemeColor, Layout } = getConfig()
+    const { MultiTagsCache, EpThemeColor, Layout } = getConfig()
     useAppStoreHook().setLayout(Layout)
     setEpThemeColor(EpThemeColor)
     useMultiTagsStoreHook().multiTagsCacheChange(MultiTagsCache)
-    toggleClass(Grey, 'html-grey', document.querySelector('html'))
-    toggleClass(Weak, 'html-weakness', document.querySelector('html'))
     router.push('/login')
     useMultiTagsStoreHook().handleTags('equal', [...routerArrays])
     resetRouter()

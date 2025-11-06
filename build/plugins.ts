@@ -9,6 +9,7 @@ import { codeInspectorPlugin } from 'code-inspector-plugin'
 import { visualizer } from 'rollup-plugin-visualizer'
 import Icons from 'unplugin-icons/vite'
 import { vitePluginFakeServer } from 'vite-plugin-fake-server'
+import { lazyImport, VxeResolver } from 'vite-plugin-lazy-import'
 import removeConsole from 'vite-plugin-remove-console'
 // import removeNoMatch from 'vite-plugin-router-warn'
 import svgLoader from 'vite-svg-loader'
@@ -34,6 +35,16 @@ export function getPluginsList(
     vueJsx(),
     VueI18nPlugin({
       include: [pathResolve('./src/locales/lang/**')],
+    }),
+    lazyImport({
+      resolvers: [
+        VxeResolver({
+          libraryName: 'vxe-pc-ui',
+        }),
+        VxeResolver({
+          libraryName: 'vxe-table',
+        }),
+      ],
     }),
     /**
      * 在页面上按住组合键时，鼠标在页面移动即会在 DOM 上出现遮罩层并显示相关信息，点击一下将自动打开 IDE 并将光标定位到元素对应的代码位置

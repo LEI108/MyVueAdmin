@@ -7,11 +7,10 @@ import GlobalizationIcon from '@/assets/svg/globalization.svg?component'
 import { useNav } from '@/layout/hooks/useNav'
 import { useTranslationLang } from '@/layout/hooks/useTranslationLang'
 import LayNotice from '../lay-notice/index.vue'
-
 import LaySearch from '../lay-search/index.vue'
-import LaySidebarBreadCrumb from '../lay-sidebar/components/SidebarBreadCrumb.vue'
-import LaySidebarFullScreen from '../lay-sidebar/components/SidebarFullScreen.vue'
-import LaySidebarTopCollapse from '../lay-sidebar/components/SidebarTopCollapse.vue'
+import LayNavbarBreadCrumb from './components/NavbarBreadCrumb.vue'
+import LayNavbarFullScreen from './components/NavbarFullScreen.vue'
+import LayNavbarTopCollapse from './components/NavbarTopCollapse.vue'
 
 const {
   device,
@@ -32,14 +31,14 @@ const { t, locale, translationCh, translationEn } = useTranslationLang()
 
 <template>
   <div class="navbar bg-[#fff] shadow-xs shadow-[rgba(0,21,41,0.08)]">
-    <LaySidebarTopCollapse
+    <LayNavbarTopCollapse
       v-if="device === 'mobile'"
       class="hamburger-container"
       :is-active="pureApp.sidebar.opened"
       @toggle-click="toggleSideBar"
     />
 
-    <LaySidebarBreadCrumb
+    <LayNavbarBreadCrumb
       v-if="device !== 'mobile'"
       class="breadcrumb-container"
     />
@@ -50,12 +49,12 @@ const { t, locale, translationCh, translationEn } = useTranslationLang()
       <!-- 国际化 -->
       <el-dropdown id="header-translation" trigger="click">
         <GlobalizationIcon
-          class="navbar-bg-hover w-[20px] h-[28px] p-[11px] cursor-pointer outline-hidden"
+          class="navbar-bg-hover w-[40px] h-[48px] p-[11px] cursor-pointer outline-hidden"
         />
         <template #dropdown>
           <el-dropdown-menu class="translation">
             <el-dropdown-item
-              :style="getDropdownItemStyle(locale, 'zh')"
+              :style="getDropdownItemStyle(locale, 'zh-CN')"
               class="dark:text-white!" :class="[getDropdownItemClass(locale, 'zh-CN')]"
               @click="translationCh"
             >
@@ -80,7 +79,7 @@ const { t, locale, translationCh, translationEn } = useTranslationLang()
         </template>
       </el-dropdown>
       <!-- 全屏 -->
-      <LaySidebarFullScreen id="full-screen" />
+      <LayNavbarFullScreen id="full-screen" />
       <!-- 消息通知 -->
       <LayNotice id="header-notice" />
       <!-- 退出登录 -->
