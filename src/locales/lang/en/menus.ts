@@ -4,10 +4,13 @@ export default {
   menus: {
     home: 'Home',
     dashboard: 'Dashboard',
-    dataAnalysis: 'Data Analysis',
+
+    generationDashboard: 'Generation Analysis',
+    energyDashboard: 'Energy Analysis',
+    deviceMaintenance: 'Device Maintenance',
+    deviceMap: 'Device Map',
 
     systemManagement: 'SystemManagement',
-    energyAnalysis: 'Energy Analysis',
     userManagement: 'User Management',
     departmentManagement: 'Department Management',
     rolePermission: 'roles Management',

@@ -47,7 +47,7 @@ const include = [
   // '@logicflow/extension',
   'vue-virtual-scroller',
   // 'codemirror-editor-vue3',
-  // '@amap/amap-jsapi-loader',
+  '@amap/amap-jsapi-loader',
   // 'el-table-infinite-scroll',
   'vue-waterfall-plugin-next',
   // '@infectoone/vue-ganttastic',

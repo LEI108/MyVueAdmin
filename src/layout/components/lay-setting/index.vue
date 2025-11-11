@@ -131,24 +131,24 @@ const pClass = computed(() => {
 const themeOptions = computed<Array<OptionsType>>(() => {
   return [
     {
-      label: t('panel.pureOverallStyleLight'),
+      label: t('panel.overallStyleLight'),
       icon: DayIcon,
       theme: 'light',
-      tip: t('panel.pureOverallStyleLightTip'),
+      tip: t('panel.overallStyleLightTip'),
       iconAttrs: { fill: isDark.value ? '#fff' : '#000' },
     },
     {
-      label: t('panel.pureOverallStyleDark'),
+      label: t('panel.overallStyleDark'),
       icon: DarkIcon,
       theme: 'dark',
-      tip: t('panel.pureOverallStyleDarkTip'),
+      tip: t('panel.overallStyleDarkTip'),
       iconAttrs: { fill: isDark.value ? '#fff' : '#000' },
     },
     {
-      label: t('panel.pureOverallStyleSystem'),
+      label: t('panel.overallStyleSystem'),
       icon: SystemIcon,
       theme: 'system',
-      tip: t('panel.pureOverallStyleSystemTip'),
+      tip: t('panel.overallStyleSystemTip'),
       iconAttrs: { fill: isDark.value ? '#fff' : '#000' },
     },
   ]
@@ -157,18 +157,18 @@ const themeOptions = computed<Array<OptionsType>>(() => {
 const markOptions = computed<Array<OptionsType>>(() => {
   return [
     {
-      label: t('panel.pureTagsStyleSmart'),
-      tip: t('panel.pureTagsStyleSmartTip'),
+      label: t('panel.tagsStyleSmart'),
+      tip: t('panel.tagsStyleSmartTip'),
       value: 'smart',
     },
     {
-      label: t('panel.pureTagsStyleCard'),
-      tip: t('panel.pureTagsStyleCardTip'),
+      label: t('panel.tagsStyleCard'),
+      tip: t('panel.tagsStyleCardTip'),
       value: 'card',
     },
     {
-      label: t('panel.pureTagsStyleChrome'),
-      tip: t('panel.pureTagsStyleChromeTip'),
+      label: t('panel.tagsStyleChrome'),
+      tip: t('panel.tagsStyleChromeTip'),
       value: 'chrome',
     },
   ]
@@ -216,7 +216,7 @@ onUnmounted(() => removeMatchMedia)
   <LayPanel>
     <div class="p-5">
       <p :class="pClass">
-        {{ t("panel.pureOverallStyle") }}
+        {{ t("panel.overallStyle") }}
       </p>
       <Segmented
         resize
@@ -236,7 +236,7 @@ onUnmounted(() => removeMatchMedia)
       />
 
       <p class="mt-5!" :class="[pClass]">
-        {{ t("panel.pureThemeColor") }}
+        {{ t("panel.themeColor") }}
       </p>
       <ul class="theme-color">
         <li
@@ -257,7 +257,7 @@ onUnmounted(() => removeMatchMedia)
       </ul>
 
       <p class="mt-4!" :class="[pClass]">
-        {{ t("panel.pureTagsStyle") }}
+        {{ t("panel.tagsStyle") }}
       </p>
       <Segmented
         resize
@@ -268,26 +268,26 @@ onUnmounted(() => removeMatchMedia)
       />
 
       <p class="mt-5! font-medium text-sm dark:text-white">
-        {{ t("panel.pureInterfaceDisplay") }}
+        {{ t("panel.interfaceDisplay") }}
       </p>
       <ul class="setting">
         <li>
-          <span class="dark:text-white">{{ t("panel.pureHiddenTags") }}</span>
+          <span class="dark:text-white">{{ t("panel.hiddenTags") }}</span>
           <el-switch
             v-model="settings.tabsVal"
             inline-prompt
-            :active-text="t('buttons.pureOpenText')"
-            :inactive-text="t('buttons.pureCloseText')"
+            :active-text="t('buttons.openText')"
+            :inactive-text="t('buttons.closeText')"
             @change="tagsChange"
           />
         </li>
         <li>
-          <span class="dark:text-white">{{ t("panel.pureHiddenFooter") }}</span>
+          <span class="dark:text-white">{{ t("panel.hiddenFooter") }}</span>
           <el-switch
             v-model="settings.hideFooter"
             inline-prompt
-            :active-text="t('buttons.pureOpenText')"
-            :inactive-text="t('buttons.pureCloseText')"
+            :active-text="t('buttons.openText')"
+            :inactive-text="t('buttons.closeText')"
             @change="hideFooterChange"
           />
         </li>
@@ -298,20 +298,20 @@ onUnmounted(() => removeMatchMedia)
             inline-prompt
             :active-value="true"
             :inactive-value="false"
-            :active-text="t('buttons.pureOpenText')"
-            :inactive-text="t('buttons.pureCloseText')"
+            :active-text="t('buttons.openText')"
+            :inactive-text="t('buttons.closeText')"
             @change="logoChange"
           />
         </li>
         <li>
           <span class="dark:text-white">
-            {{ t("panel.pureMultiTagsCache") }}
+            {{ t("panel.multiTagsCache") }}
           </span>
           <el-switch
             v-model="settings.multiTagsCache"
             inline-prompt
-            :active-text="t('buttons.pureOpenText')"
-            :inactive-text="t('buttons.pureCloseText')"
+            :active-text="t('buttons.openText')"
+            :inactive-text="t('buttons.closeText')"
             @change="multiTagsCacheChange"
           />
         </li>

@@ -55,11 +55,11 @@ onBeforeUnmount(() => {
         class="project-configuration border-0 border-b-[1px] border-solid border-[var(--pure-border-color)]"
       >
         <h4 class="dark:text-white">
-          {{ t("panel.pureSystemSet") }}
+          {{ t("panel.systemSet") }}
         </h4>
         <span
           v-tippy="{
-            content: t('panel.pureCloseSystemSet'),
+            content: t('panel.closeSystemSet'),
             placement: 'bottom-start',
             zIndex: 41000,
           }"
@@ -83,7 +83,7 @@ onBeforeUnmount(() => {
       >
         <el-button
           v-tippy="{
-            content: t('panel.pureClearCacheAndToLogin'),
+            content: t('panel.clearCacheAndToLogin'),
             placement: 'left-start',
             zIndex: 41000,
           }"
@@ -92,7 +92,7 @@ onBeforeUnmount(() => {
           bg
           @click="onReset"
         >
-          {{ t("panel.pureClearCache") }}
+          {{ t("panel.clearCache") }}
         </el-button>
       </div>
     </div>
