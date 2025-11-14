@@ -167,16 +167,13 @@ export function useAlarm() {
               }
               const description = descParts.join('；')
 
-              // 工单类型（取第一个选中的任务类型）
-              const workOrderType = formData.step1.options.length ? formData.step1.options[0] : ''
-
               // 组装工单数据
               const workOrderData = {
                 assignee: formData.step1.name,
                 assigneePhone: formData.step1.phone,
                 assigneeJobNo: formData.step1.jobNo,
                 description,
-                type: workOrderType,
+                type: formData.step1.options,
                 deviceCode: row.deviceCode,
                 deviceAddress: row.deviceAddress,
                 createTime: now.format('YYYY-MM-DD HH:mm:ss'),

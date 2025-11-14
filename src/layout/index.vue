@@ -26,7 +26,6 @@ import LayNavbar from './components/lay-navbar/index.vue'
 import LaySetting from './components/lay-setting/index.vue'
 import NavVertical from './components/lay-sidebar/NavVertical.vue'
 import LayTag from './components/lay-tag/index.vue'
-import { useLayout } from './hooks/useLayout'
 import 'animate.css'
 // 引入 src/components/ReIcon/src/offlineIcon.ts 文件中所有使用addIcon添加过的本地图标
 import '@/components/ReIcon/src/offlineIcon'
@@ -34,7 +33,6 @@ import '@/components/ReIcon/src/offlineIcon'
 const { t } = useI18n()
 const appWrapperRef = ref()
 const { isDark } = useDark()
-const { layout } = useLayout()
 const isMobile = deviceDetection()
 const pureSetting = useSettingStoreHook()
 const { $storage } = useGlobal<GlobalPropertiesApi>()

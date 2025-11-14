@@ -21,7 +21,6 @@ export function useWorkOrder() {
 
   const columns: TableColumnList = [
     { label: '勾选列', type: 'selection', fixed: 'left', reserveSelection: true },
-    { label: '设备编号', prop: 'deviceCode', minWidth: 120 },
     { label: '工单编号', prop: 'workOrderCode', minWidth: 140 },
     { label: '指派人员', prop: 'assignee', minWidth: 100 },
     { label: '电话', prop: 'assigneePhone', minWidth: 120 },
@@ -48,7 +47,7 @@ export function useWorkOrder() {
       minWidth: 100,
       cellRenderer: ({ row, props }) => {
         const map = { 1: '低', 2: '中', 3: '高' }
-        return <el-tag size={props.size} style={priorityTagStyle.value(row.alarmLevel)}>{map[row.alarmLevel]}</el-tag>
+        return <el-tag size={props.size} style={priorityTagStyle.value(row.priority)}>{map[row.priority]}</el-tag>
       },
     },
     { label: '管理人', prop: 'manager', minWidth: 100 },
@@ -99,7 +98,7 @@ export function useWorkOrder() {
         const FormRef = formRef.value.getRef()
         const curData = formRef.value.localForm as WorkOrderFormProps['formInline']
         function chores() {
-          message(`您${title}了设备编号为${curData.deviceCode}的告警`, { type: 'success' })
+          message(`您${title}了编号为${curData.workOrderCode}的工单`, { type: 'success' })
           done() // 关闭弹框
           onSearch() // 刷新表格数据
         }

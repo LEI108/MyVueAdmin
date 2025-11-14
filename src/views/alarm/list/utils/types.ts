@@ -29,7 +29,7 @@ export interface AssignStep1 {
   phone: string
   jobNo: string
   urgent: boolean
-  options: string[]
+  options: string
   remark: string
 }
 

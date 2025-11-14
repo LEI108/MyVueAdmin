@@ -55,7 +55,6 @@ export const formRules = reactive<FormRules>({
   ],
   options: [
     {
-      type: 'array',
       required: true,
       message: '请选择任务类型',
       trigger: 'change',

@@ -20,7 +20,7 @@ const formData = reactive<AssignFormData>({
     phone: '',
     jobNo: '',
     urgent: false,
-    options: [],
+    options: '',
     remark: '',
   },
   step2: {
@@ -98,14 +98,14 @@ function submit() {
           </ReCol>
           <ReCol :value="22">
             <el-form-item label="任务类型" prop="options">
-              <el-checkbox-group v-model="formData.step1.options">
-                <el-checkbox label="安装" />
-                <el-checkbox label="维修" />
-                <el-checkbox label="保养" />
-                <el-checkbox label="巡检" />
-                <el-checkbox label="投诉" />
-                <el-checkbox label="其他" />
-              </el-checkbox-group>
+              <el-radio-group v-model="formData.step1.options">
+                <el-radio label="安装" />
+                <el-radio label="维修" />
+                <el-radio label="保养" />
+                <el-radio label="巡检" />
+                <el-radio label="投诉" />
+                <el-radio label="其他" />
+              </el-radio-group>
             </el-form-item>
           </ReCol>
           <ReCol :value="22">

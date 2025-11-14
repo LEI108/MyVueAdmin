@@ -20,11 +20,11 @@ export default defineFakeRoute([
     response: ({ body }) => {
       const now = dayjs()
       const newItem: WorkOrderItem = {
-        ...(body as Omit<WorkOrderItem, 'id' | 'workOrderCode' | 'createTime'>),
+        ...(body as Omit<WorkOrderItem, 'id' | 'workOrderCode' | 'createTime' | 'deadline'>),
         id: workOrderList.length + 1,
         workOrderCode: generateWorkOrderCode(),
-        createTime: now.format('YYYY-MM-DD HH:mm:ss'), // 指派提交时间
-        deadline: now.add(Math.floor(Math.random() * 5) + 3, 'day').format('YYYY-MM-DD HH:mm:ss'), // 随机未来时间
+        createTime: now.format('YYYY-MM-DD HH:mm:ss'), // 指派成功那一刻
+        deadline: now.add(Math.floor(Math.random() * 3) + 3, 'day').format('YYYY-MM-DD HH:mm:ss'), // 随机3~5天
         finishTime: '', // 默认空
       }
       workOrderList.push(newItem)
@@ -37,7 +37,7 @@ export default defineFakeRoute([
     response: ({ params, body }) => {
       const index = workOrderList.findIndex(i => i.id === +params.id)
       if (index > -1) {
-        const { createTime, ...rest } = body as Partial<WorkOrderItem> // 排除 createTime
+        const { createTime, ...rest } = body as Partial<WorkOrderItem> // 排除创建时间不能改
         workOrderList[index] = { ...workOrderList[index], ...rest }
         return { success: true, data: workOrderList[index] }
       }
