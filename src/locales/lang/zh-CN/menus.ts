@@ -10,6 +10,7 @@ export default {
     deviceStatus: '充电桩管理',
     alarmManagement: '告警管理',
     alarmList: '告警列表',
+    alarmWorkOrders: '工单列表',
 
     systemManagement: '系统管理',
     userManagement: '用户管理',

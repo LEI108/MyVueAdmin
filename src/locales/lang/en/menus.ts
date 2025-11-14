@@ -10,8 +10,9 @@ export default {
     deviceMaintenance: 'Device Maintenance',
     deviceMap: 'Device Map',
     deviceStatus: 'Device Status',
-
+    alarmManagement: 'Alarm Management',
     alarmList: 'Alarm List',
+    alarmWorkOrders: 'Alarm WorkOrders',
 
     systemManagement: 'SystemManagement',
     userManagement: 'User Management',

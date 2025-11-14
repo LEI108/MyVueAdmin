@@ -10,6 +10,8 @@ import { message } from '@/utils/message'
 import { usePublicHooks } from '../../hooks'
 import assignForm from '../components/assignForm.vue'
 import editForm from '../components/form.vue'
+import { exportExcel } from "@/utils/excel/exportExcel"
+import { buildExportColumnsFromTable } from "@/utils/excel/buildExportColumns"
 
 export function useAlarm() {
   const form = reactive({
@@ -214,6 +216,25 @@ export function useAlarm() {
     })
   }
 
+
+  function onExport() {
+  const exportColumns = buildExportColumnsFromTable(columns, {
+    fieldFormatters: {
+      alarmTime: row => dayjs(row.alarmTime).format("YYYY-MM-DD HH:mm:ss"),
+      alarmLevel: row => ({ 1: "轻微", 2: "中等", 3: "严重" }[row.alarmLevel] ?? ""),
+      status: row => ({ 1: "待指派", 2: "处理中", 3: "已完成" }[row.status] ?? "")
+    }
+  })
+
+  exportExcel(
+    dataList.value,
+    exportColumns,
+    `告警报表_${dayjs().format("YYYYMMDD_HHmmss")}.xlsx`,
+    "告警数据"
+  )
+  message("导出成功", { type: "success" })
+}
+
   onMounted(() => {
     onSearch()
   })
@@ -223,6 +244,7 @@ export function useAlarm() {
     loading,
     columns,
     dataList,
+    onExport,
     onSearch,
     resetForm,
     openDialog,

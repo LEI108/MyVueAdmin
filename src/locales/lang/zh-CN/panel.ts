@@ -20,5 +20,8 @@ export default {
     tagsStyleChrome: '谷歌',
     tagsStyleChromeTip: '谷歌风格，经典美观',
     interfaceDisplay: '界面显示',
+    hiddenTags: '隐藏标签页',
+    hiddenFooter: '隐藏页脚',
+    multiTagsCache: '页签持久化',
   },
 }

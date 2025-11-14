@@ -123,7 +123,7 @@ const { t, locale, translationCh, translationEn } = useTranslationLang()
   width: 100%;
   height: 48px;
   overflow: hidden;
-
+  
   .hamburger-container {
     float: left;
     height: 100%;

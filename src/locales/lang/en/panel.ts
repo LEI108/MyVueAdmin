@@ -22,5 +22,8 @@ export default {
     tagsStyleChrome: 'Chrome',
     tagsStyleChromeTip: 'Chrome style is classic and elegant',
     interfaceDisplay: 'Interface Display',
+     hiddenTags: 'Hidden Tags',
+  hiddenFooter: 'Hidden Footer',
+  multiTagsCache: 'MultiTags Cache',
   },
 }

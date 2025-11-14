@@ -1,17 +1,22 @@
 import type { WorkOrderFormProps, WorkOrderItem } from './types'
+import type { ExportColumn } from '@/utils/excel/exportExcel'
 import { deviceDetection, isAllEmpty } from '@pureadmin/utils'
+import dayjs from 'dayjs'
 import { h, onMounted, reactive, ref } from 'vue'
 import { addWorkOrder, deleteWorkOrder, getWorkOrderList, updateAlarmStatus, updateWorkOrder } from '@/api/workorder'
 import { addDialog } from '@/components/ReDialog'
+import { exportExcel } from '@/utils/excel/exportExcel'
 import { message } from '@/utils/message'
 import { usePublicHooks } from '../../hooks'
 import detailView from '../components/detailView.vue'
 import editForm from '../components/form.vue'
+import { buildExportColumnsFromTable } from "@/utils/excel/buildExportColumns"
 
 export function useWorkOrder() {
   const form = reactive({
     workOrderCode: '',
     status: null as number | null,
+    timeRange: [] as string[], // 日期时间段，两个值：开始时间 & 结束时间
   })
 
   const formRef = ref()
@@ -80,6 +85,18 @@ export function useWorkOrder() {
     if (!isAllEmpty(form.status)) {
       newData = newData.filter(item => item.status === form.status)
     }
+
+    if (form.timeRange && form.timeRange.length === 2) {
+      const [start, end] = form.timeRange
+      const startTs = dayjs(start).valueOf()
+      const endTs = dayjs(end).valueOf()
+
+      newData = newData.filter((item) => {
+        const createTs = dayjs(item.createTime).valueOf()
+        return createTs >= startTs && createTs <= endTs
+      })
+    }
+
     dataList.value = newData
     setTimeout(() => (loading.value = false), 500)
   }
@@ -140,6 +157,24 @@ export function useWorkOrder() {
     })
   }
 
+function onExport() {
+  const exportColumns = buildExportColumnsFromTable(columns, {
+    fieldFormatters: {
+      status: row => ({ 1: "待处理", 2: "处理中", 3: "已完成" }[row.status] ?? ""),
+      priority: row => ({ 1: "低", 2: "中", 3: "高" }[row.priority] ?? "")
+      // 时间类字段可交由 exportExcel 自动处理；也可以在此覆盖
+      // createTime: row => dayjs(row.createTime).format("YYYY-MM-DD HH:mm:ss")
+    }
+  })
+
+  exportExcel(
+    dataList.value,
+    exportColumns,
+    `工单报表_${dayjs().format("YYYYMMDD_HHmmss")}.xlsx`,
+    "工单数据"
+  )
+  message("导出成功", { type: "success" })
+}
   onMounted(onSearch)
 
   return {
@@ -147,6 +182,7 @@ export function useWorkOrder() {
     loading,
     columns,
     dataList,
+    onExport,
     onSearch,
     openDialog,
     openViewDialog,

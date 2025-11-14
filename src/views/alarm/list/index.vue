@@ -18,6 +18,7 @@ const {
   loading,
   columns,
   dataList,
+  onExport,
   onSearch,
   resetForm,
   openDialog,
@@ -69,6 +70,7 @@ function onFullscreen() {
       @fullscreen="onFullscreen"
     >
       <template #buttons>
+        <el-button type="primary" @click="onExport">导出</el-button>
         <el-button type="primary" :icon="useRenderIcon(AddFill)" @click="openDialog()">
           新增故障
         </el-button>

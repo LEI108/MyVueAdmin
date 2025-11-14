@@ -7,6 +7,7 @@ import ViewIcon from '~icons/ep/view'
 import AddFill from '~icons/ri/add-circle-line'
 import { useRenderIcon } from '@/components/ReIcon/src/hooks'
 import { PureTableBar } from '@/components/RePureTableBar'
+import { getPickerShortcuts } from './utils/getPickerShortcuts'
 import { useWorkOrder } from './utils/hook'
 
 defineOptions({ name: 'WorkOrderManage' })
@@ -18,12 +19,14 @@ const {
   loading,
   columns,
   dataList,
+  onExport,
   onSearch,
   openDialog,
   handleDelete,
   resetForm,
   handleSelectionChange,
   openViewDialog,
+ 
 } = useWorkOrder()
 
 function onFullscreen() {
@@ -50,6 +53,16 @@ function onFullscreen() {
           <el-option label="已完成" :value="3" />
         </el-select>
       </el-form-item>
+      <el-form-item label="工单时间" prop="timeRange">
+        <el-date-picker
+          v-model="form.timeRange"
+          :shortcuts="getPickerShortcuts()"
+          type="datetimerange"
+          range-separator="至"
+          start-placeholder="开始日期时间"
+          end-placeholder="结束日期时间"
+        />
+      </el-form-item>
       <el-form-item>
         <el-button type="primary" :icon="useRenderIcon('ri/search-line')" :loading="loading" @click="onSearch">
           搜索
@@ -57,6 +70,7 @@ function onFullscreen() {
         <el-button :icon="useRenderIcon(Refresh)" @click="resetForm(formRef)">
           重置
         </el-button>
+       
       </el-form-item>
     </el-form>
 
@@ -69,6 +83,7 @@ function onFullscreen() {
       @fullscreen="onFullscreen"
     >
       <template #buttons>
+        <el-button type="primary" @click="onExport">导出</el-button>
         <el-button type="primary" :icon="useRenderIcon(AddFill)" @click="openDialog('新增')">
           新增工单
         </el-button>
