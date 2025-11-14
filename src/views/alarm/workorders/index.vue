@@ -31,7 +31,7 @@ function onFullscreen() {
         <el-select v-model="form.status" placeholder="请选择处理状态" clearable class="w-[180px]!">
           <el-option label="待指派" :value="1" />
           <el-option label="处理中" :value="2" />
-          <el-option label="已完成" :value="3" />
+          <el-option label="处理完毕" :value="3" />
         </el-select>
       </el-form-item>
       <el-form-item>

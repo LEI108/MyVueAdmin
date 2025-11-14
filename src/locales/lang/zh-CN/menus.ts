@@ -7,6 +7,9 @@ export default {
     energyDashboard: '产能分析',
     deviceMaintenance: '设备管理',
     deviceMap: '设备分布',
+    deviceStatus: '充电桩管理',
+    alarmManagement: '告警管理',
+    alarmList: '告警列表',
 
     systemManagement: '系统管理',
     userManagement: '用户管理',

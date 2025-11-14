@@ -23,24 +23,6 @@ export default {
       meta: { title: $t('menus.energyDashboard') },
     },
     {
-      path: '/dashboard/efficiency',
-      name: 'Efficiencydashboard',
-      component: () => import('@/views/dashboard/efficiency/index.vue'),
-      meta: { title: $t('menus.efficiencydashboard') },
-    },
-    {
-      path: '/dashboard/carbon',
-      name: 'Carbondashboard',
-      component: () => import('@/views/dashboard/carbon/index.vue'),
-      meta: { title: $t('menus.carbondashboard') },
-    },
-    {
-      path: '/dashboard/trend',
-      name: 'TrendForecast',
-      component: () => import('@/views/dashboard/trend/index.vue'),
-      meta: { title: $t('menus.trenddashboard') },
-    },
-    {
       path: '/dashboard/custom-report',
       name: 'CustomReport',
       component: () => import('@/views/dashboard/custom-report/index.vue'),

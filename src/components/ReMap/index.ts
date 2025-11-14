@@ -1,7 +1,7 @@
 import { withInstall } from '@pureadmin/utils'
-import amap from './src/Amap.vue'
+import remap from './src/index.vue'
 
 /** 高德地图组件 */
-export const Amap = withInstall(amap)
+export const ReMap = withInstall(remap)
 
-export default Amap
+export default ReMap

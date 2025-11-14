@@ -1,20 +1,20 @@
 <script setup lang="ts">
-import { ref } from "vue";
-import { useDept } from "./utils/hook";
-import { PureTableBar } from "@/components/RePureTableBar";
-import { useRenderIcon } from "@/components/ReIcon/src/hooks";
+import { ref } from 'vue'
+import Delete from '~icons/ep/delete'
+import EditPen from '~icons/ep/edit-pen'
+import Refresh from '~icons/ep/refresh'
 
-import Delete from "~icons/ep/delete";
-import EditPen from "~icons/ep/edit-pen";
-import Refresh from "~icons/ep/refresh";
-import AddFill from "~icons/ri/add-circle-line";
+import AddFill from '~icons/ri/add-circle-line'
+import { useRenderIcon } from '@/components/ReIcon/src/hooks'
+import { PureTableBar } from '@/components/RePureTableBar'
+import { useDept } from './utils/hook'
 
 defineOptions({
-  name: "SystemDept"
-});
+  name: 'SystemDept',
+})
 
-const formRef = ref();
-const tableRef = ref();
+const formRef = ref()
+const tableRef = ref()
 const {
   form,
   loading,
@@ -24,12 +24,12 @@ const {
   resetForm,
   openDialog,
   handleDelete,
-  handleSelectionChange
-} = useDept();
+  handleSelectionChange,
+} = useDept()
 
 function onFullscreen() {
   // 重置表格高度
-  tableRef.value.setAdaptive();
+  tableRef.value.setAdaptive()
 }
 </script>
 
@@ -78,7 +78,7 @@ function onFullscreen() {
     <PureTableBar
       title="部门管理"
       :columns="columns"
-      :tableRef="tableRef?.getTableRef()"
+      :table-ref="tableRef?.getTableRef()"
       @refresh="onSearch"
       @fullscreen="onFullscreen"
     >
@@ -91,14 +91,14 @@ function onFullscreen() {
           新增部门
         </el-button>
       </template>
-      <template v-slot="{ size, dynamicColumns }">
+      <template #default="{ size, dynamicColumns }">
         <pure-table
           ref="tableRef"
           adaptive
-          :adaptiveConfig="{ offsetBottom: 45 }"
+          :adaptive-config="{ offsetBottom: 45 }"
           align-whole="center"
           row-key="id"
-          showOverflowTooltip
+          show-overflow-tooltip
           table-layout="auto"
           default-expand-all
           :loading="loading"
@@ -107,7 +107,7 @@ function onFullscreen() {
           :columns="dynamicColumns"
           :header-cell-style="{
             background: 'var(--el-fill-color-light)',
-            color: 'var(--el-text-color-primary)'
+            color: 'var(--el-text-color-primary)',
           }"
           @selection-change="handleSelectionChange"
         >

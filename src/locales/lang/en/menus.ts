@@ -9,6 +9,9 @@ export default {
     energyDashboard: 'Energy Analysis',
     deviceMaintenance: 'Device Maintenance',
     deviceMap: 'Device Map',
+    deviceStatus: 'Device Status',
+
+    alarmList: 'Alarm List',
 
     systemManagement: 'SystemManagement',
     userManagement: 'User Management',

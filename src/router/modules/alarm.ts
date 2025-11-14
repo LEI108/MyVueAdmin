@@ -17,22 +17,10 @@ export default {
       meta: { title: $t('menus.alarmList') },
     },
     {
-      path: '/alarm/record',
-      name: 'AlarmRecord',
-      component: () => import('@/views/alarm/records/index.vue'),
-      meta: { title: $t('menus.alarmRecord') },
-    },
-    {
-      path: '/alarm/statistics',
-      name: 'AlarmStatistics',
-      component: () => import('@/views/alarm/statistics/index.vue'),
-      meta: { title: $t('menus.alarmStatistics') },
-    },
-    {
-      path: '/alarm/rule-config',
-      name: 'AlarmRuleConfig',
-      component: () => import('@/views/alarm/rules/index.vue'),
-      meta: { title: $t('menus.alarmRuleConfig') },
+      path: '/alarm/workorders',
+      name: 'AlarmOrders',
+      component: () => import('@/views/alarm/workorders/index.vue'),
+      meta: { title: $t('menus.alarmWorkOrders') },
     },
   ],
 } satisfies RouteConfigsTable

@@ -1,9 +1,11 @@
 <script setup lang="ts">
+import { useDark } from '@pureadmin/utils'
 import { ref } from 'vue'
 import ReCol from '@/components/ReCol'
 import { ReNormalCountTo } from '@/components/ReCountTo/index'
 import Segmented from '@/components/ReSegmented'
 import { ChartArea, ChartLine, ChartRound, ChartWaveBall } from './components/charts/index'
+
 import {
   carbonAnalysisData,
   generationData,
@@ -12,7 +14,6 @@ import {
   totalGenerationData,
   xLabels,
 } from './data'
-import { useDark } from './utils'
 
 defineOptions({
   name: 'EnergyAnalysis',

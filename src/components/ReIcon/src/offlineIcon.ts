@@ -25,6 +25,7 @@ import PhClipboardText from '~icons/ph/clipboard-text?raw'
 import PhCornersOut from '~icons/ph/corners-out?raw'
 import PhCreditCard from '~icons/ph/credit-card?raw'
 import PhCurrencyDollar from '~icons/ph/currency-dollar?raw'
+import PhDevices from '~icons/ph/devices?raw'
 import PhFileText from '~icons/ph/file-text?raw'
 import PhFolder from '~icons/ph/folder?raw'
 import PhGauge from '~icons/ph/gauge?raw'
@@ -50,7 +51,7 @@ import PhUserCircle from '~icons/ph/user-circle?raw'
 import PhUserSquare from '~icons/ph/user-square?raw'
 import PhUser from '~icons/ph/user?raw'
 import PhUsersThree from '~icons/ph/users-three?raw'
-import PhWarning from '~icons/ph/warning?raw'
+import PhWarningCircle from '~icons/ph/warning-circle?raw'
 import PhX from '~icons/ph/x?raw'
 
 import RiAdminFill from '~icons/ri/admin-fill?raw'
@@ -130,9 +131,10 @@ const icons = [
   ['ph/user', PhUser],
   ['ph/user-circle', PhUserCircle],
   ['ph/user-square', PhUserSquare],
-  ['ph/warning', PhWarning],
+  ['ph/warning-circle', PhWarningCircle],
   ['ph/x', PhX],
   ['ph/users-three', PhUsersThree],
+  ['ph/devices', PhDevices],
   // Element Plus Icon: https://github.com/element-plus/element-plus-icons
   ['ep/menu', EpMenu],
   ['ep/edit', EpEdit],
