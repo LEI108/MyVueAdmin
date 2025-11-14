@@ -2,46 +2,15 @@ import type { FormRules } from 'element-plus'
 import { isPhone } from '@pureadmin/utils'
 import { reactive } from 'vue'
 
-/** 告警表单+指派表单规则 */
-export const formRules = reactive<FormRules>({
-  // --------------- 告警表单规则 ---------------
-  deviceCode: [
-    { required: true, message: '设备编号为必填项', trigger: 'blur' },
-  ],
-  deviceAddress: [
-    { required: true, message: '设备地址为必填项', trigger: 'blur' },
-  ],
-  faultDesc: [
-    { required: true, message: '故障描述为必填项', trigger: 'blur' },
-  ],
-  alarmTime: [
-    { required: true, message: '请选择告警时间', trigger: 'change' },
-  ],
-  alarmLevel: [
-    { required: true, message: '请选择告警级别', trigger: 'change' },
-  ],
-  status: [
-    { required: true, message: '请选择处理状态', trigger: 'change' },
-  ],
-
-  // --------------- 指派表单规则 ----------------
-  /** 第一步 - 基本信息 */
-  name: [
-    { required: true, message: '姓名为必填项', trigger: 'blur' },
-  ],
-  phone: [
-    {
-      required: true,
-      message: '电话为必填项',
-      trigger: 'blur',
-    },
+export const workOrderRules = reactive<FormRules>({
+  workOrderCode: [{ required: true, message: '工单编号为必填项', trigger: 'blur' }],
+  assignee: [{ required: true, message: '指派人员为必填项', trigger: 'blur' }],
+  assigneePhone: [
+    { required: true, message: '电话为必填项', trigger: 'blur' },
     {
       validator: (_rule, value, callback) => {
-        if (value === '') {
-          callback()
-        }
-        else if (!isPhone(value)) {
-          callback(new Error('请输入正确的手机号码格式'))
+        if (value && !isPhone(value)) {
+          callback(new Error('请输入正确的手机号码'))
         }
         else {
           callback()
@@ -50,52 +19,11 @@ export const formRules = reactive<FormRules>({
       trigger: 'blur',
     },
   ],
-  jobNo: [
-    { required: true, message: '工号为必填项', trigger: 'blur' },
-  ],
-  options: [
-    {
-      type: 'array',
-      required: false,
-      message: '请选择至少一个选项',
-      trigger: 'change',
-    },
-  ],
-  remark: [
-    { required: false, message: '备注信息', trigger: 'blur' },
-  ],
-
-  /** 第二步 - 审批信息 */
-  approvalDept: [
-    { required: true, message: '请选择审批部门', trigger: 'change' },
-  ],
-  copyDept: [
-    { required: true, message: '请选择抄送部门', trigger: 'change' },
-  ],
-
-  /** 第三步 - 负责人信息 */
-  leaderName: [
-    { required: true, message: '负责人姓名为必填项', trigger: 'blur' },
-  ],
-  leaderPhone: [
-    {
-      required: true,
-      message: '电话为必填项',
-      trigger: 'blur',
-    },
-    {
-      validator: (_rule, value, callback) => {
-        if (value === '') {
-          callback()
-        }
-        else if (!isPhone(value)) {
-          callback(new Error('请输入正确的手机号码格式'))
-        }
-        else {
-          callback()
-        }
-      },
-      trigger: 'blur',
-    },
-  ],
+  description: [{ required: true, message: '工单描述为必填项', trigger: 'blur' }],
+  type: [{ required: true, message: '请选择工单类型', trigger: 'change' }],
+  deviceCode: [{ required: true, message: '设备编号为必填项', trigger: 'blur' }],
+  deviceAddress: [{ required: true, message: '设备地点为必填项', trigger: 'blur' }],
+  deadline: [{ required: true, message: '请选择截止时间', trigger: 'change' }],
+  status: [{ required: true, message: '请选择处理状态', trigger: 'change' }],
+  priority: [{ required: true, message: '请选择优先级', trigger: 'change' }],
 })

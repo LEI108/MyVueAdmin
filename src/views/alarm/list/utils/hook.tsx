@@ -4,6 +4,7 @@ import dayjs from 'dayjs'
 import { ElButton } from 'element-plus'
 import { h, onMounted, reactive, ref } from 'vue'
 import { addAlarm, assignAlarm, deleteAlarm, getAlarmList, updateAlarm } from '@/api/alarm'
+import { addWorkOrder } from '@/api/workorder' // 新增引入工单接口
 import { addDialog, closeDialog } from '@/components/ReDialog'
 import { message } from '@/utils/message'
 import { usePublicHooks } from '../../hooks'
@@ -132,7 +133,6 @@ export function useAlarm() {
   }
 
   function openAssignDialog(row) {
-  // 让 contentRenderer 和 footerRenderer 共享同一个表单组件引用
     const compRef = ref()
 
     addDialog({
@@ -140,29 +140,67 @@ export function useAlarm() {
       width: '40%',
       closeOnClickModal: false,
 
-      // 内容区渲染 assignForm
       contentRenderer: ({ options, index }) =>
         h(assignForm, {
           ref: compRef,
           onSubmit: (formData) => {
-          // 提交成功后自动关闭弹窗
+          // 提交告警指派
             assignAlarm(row.id, formData).then(() => {
               message('指派成功', { type: 'success' })
-              // 刷新数据
+
+              // ====== 工单生成逻辑开始 ======
+              const now = dayjs()
+              const deadline = now.add(Math.floor(Math.random() * 7) + 1, 'day')
+
+              // 构建描述
+              const descParts = []
+              // 1. 告警表单中的故障描述
+              if (row.faultDesc)
+                descParts.push(row.faultDesc)
+              // 2. 如果勾选了“安装”类型
+              if (formData.step1.options.includes('安装')) {
+                descParts.push('需要安装')
+              }
+              // 3. 备注信息
+              if (formData.step1.remark) {
+                descParts.push(formData.step1.remark)
+              }
+              const description = descParts.join('；')
+
+              // 工单类型（取第一个选中的任务类型）
+              const workOrderType = formData.step1.options.length ? formData.step1.options[0] : ''
+
+              // 组装工单数据
+              const workOrderData = {
+                assignee: formData.step1.name,
+                assigneePhone: formData.step1.phone,
+                assigneeJobNo: formData.step1.jobNo,
+                description,
+                type: workOrderType,
+                deviceCode: row.deviceCode,
+                deviceAddress: row.deviceAddress,
+                createTime: now.format('YYYY-MM-DD HH:mm:ss'),
+                deadline: deadline.format('YYYY-MM-DD HH:mm:ss'),
+                status: 1, // 待处理
+                priority: 2, // 中
+                manager: formData.step3.leaderName,
+                finishTime: '',
+              }
+
+              // 调用工单API
+              addWorkOrder(workOrderData).then(() => {
+                message('工单已自动生成', { type: 'success' })
+              })
+              // ====== 工单生成逻辑结束 ======
+
+              // 刷新告警表格
               onSearch()
-              // 关闭弹窗
               closeDialog(options, index)
             })
           },
         }),
 
-      // 底部统一按钮（footerRenderer）
       footerRenderer: ({ options, index }) => {
-      /**
-       * 由于 footerRenderer 会在弹窗创建时执行一次，因此
-       *  点击按钮时去访问 compRef.value 是可以的，
-       *  因为在渲染阶段它已经绑定到 assignForm 组件实例
-       */
         return h(
           'div',
           { style: 'display:flex;justify-content:flex-end;gap:8px' },
@@ -173,7 +211,7 @@ export function useAlarm() {
             compRef.value?.activeStep < 3
               ? h(ElButton, { type: 'primary', onClick: () => compRef.value?.nextStep() }, '下一步')
               : h(ElButton, { type: 'success', onClick: () => compRef.value?.submit() }, '提交'),
-          ].filter(Boolean), // 过滤掉 undefined 按钮
+          ].filter(Boolean),
         )
       },
     })

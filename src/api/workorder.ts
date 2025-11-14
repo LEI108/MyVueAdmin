@@ -1,27 +1,29 @@
-import type { WorkOrderFormData, WorkOrderItem } from '@/views/alarm/workorders/utils/types'
+import type { WorkOrderItem } from '@/views/alarm/workorders/utils/types'
 import { http } from '@/utils/http'
 
-/** 获取工单列表 */
+interface Result<T> {
+  success: boolean
+  data: T
+}
+
 export function getWorkOrderList() {
-  return http.request<WorkOrderItem[]>('get', '/mock/workorder/list')
+  return http.request<Result<WorkOrderItem[]>>('get', '/api/workorders')
 }
 
 /** 新增工单 */
-export function addWorkOrder(data: WorkOrderFormData) {
-  return http.request('post', '/mock/workorder/add', { data })
+export function addWorkOrder(data: Omit<WorkOrderItem, 'id' | 'workOrderCode'>) {
+  return http.request<Result<WorkOrderItem>>('post', '/api/workorders', { data })
 }
 
-/** 更新工单 */
-export function updateWorkOrder(id: string, data: Partial<WorkOrderFormData>) {
-  return http.request('put', `/mock/workorder/update/${id}`, { data })
+export function updateWorkOrder(id: number, data: Partial<WorkOrderItem>) {
+  return http.request<Result<WorkOrderItem>>('put', `/api/workorders/${id}`, { data })
 }
 
-/** 删除工单 */
-export function deleteWorkOrder(id: string) {
-  return http.request('delete', `/mock/workorder/delete/${id}`)
+export function deleteWorkOrder(id: number) {
+  return http.request<Result<WorkOrderItem>>('delete', `/api/workorders/${id}`)
 }
 
-/** 指派工单 */
-export function assignWorkOrder(id: string, formData: any) {
-  return http.request('post', `/mock/workorder/assign/${id}`, { data: formData })
+/** 同步告警状态 */
+export function updateAlarmStatus(deviceCode: string, status: number) {
+  return http.request<Result<any>>('post', `/api/alarms/status/update`, { data: { deviceCode, status } })
 }
