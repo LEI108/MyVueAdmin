@@ -18,11 +18,14 @@ export default defineFakeRoute([
     url: '/api/workorders',
     method: 'post',
     response: ({ body }) => {
-      const newItem = {
-        ...(body as Omit<WorkOrderItem, 'id'>),
+      const now = dayjs()
+      const newItem: WorkOrderItem = {
+        ...(body as Omit<WorkOrderItem, 'id' | 'workOrderCode' | 'createTime'>),
         id: workOrderList.length + 1,
         workOrderCode: generateWorkOrderCode(),
-        createTime: dayjs().format('YYYY-MM-DD HH:mm:ss'),
+        createTime: now.format('YYYY-MM-DD HH:mm:ss'), // 指派提交时间
+        deadline: now.add(Math.floor(Math.random() * 5) + 3, 'day').format('YYYY-MM-DD HH:mm:ss'), // 随机未来时间
+        finishTime: '', // 默认空
       }
       workOrderList.push(newItem)
       return { success: true, data: newItem }
@@ -34,7 +37,8 @@ export default defineFakeRoute([
     response: ({ params, body }) => {
       const index = workOrderList.findIndex(i => i.id === +params.id)
       if (index > -1) {
-        workOrderList[index] = { ...workOrderList[index], ...(body as any) }
+        const { createTime, ...rest } = body as Partial<WorkOrderItem> // 排除 createTime
+        workOrderList[index] = { ...workOrderList[index], ...rest }
         return { success: true, data: workOrderList[index] }
       }
       return { success: false, message: '未找到工单' }

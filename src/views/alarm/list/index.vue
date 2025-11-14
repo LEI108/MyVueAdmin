@@ -13,7 +13,18 @@ defineOptions({ name: 'AlarmManage' })
 
 const formRef = ref()
 const tableRef = ref()
-const { form, loading, columns, dataList, onSearch, resetForm, openDialog, handleDelete, handleSelectionChange, openAssignDialog } = useAlarm()
+const {
+  form,
+  loading,
+  columns,
+  dataList,
+  onSearch,
+  resetForm,
+  openDialog,
+  handleDelete,
+  handleSelectionChange,
+  openAssignDialog,
+} = useAlarm()
 
 function onFullscreen() {
   tableRef.value.setAdaptive()
@@ -23,7 +34,12 @@ function onFullscreen() {
 <template>
   <div class="main">
     <!-- 搜索栏 -->
-    <el-form ref="formRef" :inline="true" :model="form" class="search-form bg-bg_color w-full pl-8 pt-[12px] overflow-auto">
+    <el-form
+      ref="formRef"
+      :inline="true"
+      :model="form"
+      class="search-form bg-bg_color w-full pl-8 pt-[12px] overflow-auto"
+    >
       <el-form-item label="设备编号：" prop="deviceCode">
         <el-input v-model="form.deviceCode" placeholder="请输入设备编号" clearable class="w-[180px]!" />
       </el-form-item>
@@ -45,7 +61,13 @@ function onFullscreen() {
     </el-form>
 
     <!-- 表格 -->
-    <PureTableBar title="告警管理" :columns="columns" :table-ref="tableRef?.getTableRef()" @refresh="onSearch" @fullscreen="onFullscreen">
+    <PureTableBar
+      title="告警管理"
+      :columns="columns"
+      :table-ref="tableRef?.getTableRef()"
+      @refresh="onSearch"
+      @fullscreen="onFullscreen"
+    >
       <template #buttons>
         <el-button type="primary" :icon="useRenderIcon(AddFill)" @click="openDialog()">
           新增故障
@@ -53,8 +75,19 @@ function onFullscreen() {
       </template>
       <template #default="{ size, dynamicColumns }">
         <pure-table
-          ref="tableRef" adaptive :adaptive-config="{ offsetBottom: 45 }" align-whole="center" row-key="id" show-overflow-tooltip table-layout="auto" default-expand-all
-          :loading="loading" :size="size" :data="dataList" :columns="dynamicColumns" :header-cell-style="{
+          ref="tableRef"
+          adaptive
+          :adaptive-config="{ offsetBottom: 45 }"
+          align-whole="center"
+          row-key="id"
+          show-overflow-tooltip
+          table-layout="auto"
+          default-expand-all
+          :loading="loading"
+          :size="size"
+          :data="dataList"
+          :columns="dynamicColumns"
+          :header-cell-style="{
             background: 'var(--el-fill-color-light)',
             color: 'var(--el-text-color-primary)',
           }"

@@ -124,6 +124,54 @@ export function usePublicHooks() {
     }
   })
 
+  /** 优先级颜色（低-绿; 中等-橙; 高-红） */
+  const priorityTagStyle = computed(() => {
+    return (level: number) => {
+      const colors = {
+        // 轻微-绿
+        1: {
+          light: {
+            '--el-tag-text-color': '#389e0d',
+            '--el-tag-bg-color': '#f6ffed',
+            '--el-tag-border-color': '#b7eb8f',
+          },
+          dark: {
+            '--el-tag-text-color': '#6abe39',
+            '--el-tag-bg-color': '#172412',
+            '--el-tag-border-color': '#274a17',
+          },
+        },
+        // 中等-橙
+        2: {
+          light: {
+            '--el-tag-text-color': '#d46b08',
+            '--el-tag-bg-color': '#fff7e6',
+            '--el-tag-border-color': '#ffd591',
+          },
+          dark: {
+            '--el-tag-text-color': '#e6a23c',
+            '--el-tag-bg-color': '#2b2311',
+            '--el-tag-border-color': '#7d5b24',
+          },
+        },
+        // 严重-红
+        3: {
+          light: {
+            '--el-tag-text-color': '#cf1322',
+            '--el-tag-bg-color': '#fff1f0',
+            '--el-tag-border-color': '#ffa39e',
+          },
+          dark: {
+            '--el-tag-text-color': '#e84749',
+            '--el-tag-bg-color': '#2b1316',
+            '--el-tag-border-color': '#58191c',
+          },
+        },
+      }
+      return isDark.value ? colors[level].dark : colors[level].light
+    }
+  })
+
   return {
     /** 当前网页是否为`dark`模式 */
     isDark,
@@ -135,5 +183,7 @@ export function usePublicHooks() {
     alarmLevelTagStyle,
     /** 处理状态样式 */
     processStatusTagStyle,
+    /** 优先级样式 */
+    priorityTagStyle,
   }
 }
