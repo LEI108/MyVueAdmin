@@ -62,7 +62,7 @@ function generateAlarmData(count: number): AlarmItem[] {
 }
 
 // 模拟存储的告警列表
-const alarmList: AlarmItem[] = generateAlarmData(15) // 生成15条记录
+const alarmList: AlarmItem[] = generateAlarmData(30) // 生成15条记录
 
 // 获取新的 ID
 function getNextId() {

@@ -95,14 +95,14 @@ const { t, locale, translationCh, translationEn } = useTranslationLang()
                 :icon="AccountSettingsIcon"
                 style="margin: 5px"
               />
-              {{ t("buttons.pureAccountSettings") }}
+              {{ t("buttons.accountSettings") }}
             </el-dropdown-item>
             <el-dropdown-item @click="logout">
               <IconifyIconOffline
                 :icon="LogoutCircleRLine"
                 style="margin: 5px"
               />
-              {{ t("buttons.pureLoginOut") }}
+              {{ t("buttons.loginOut") }}
             </el-dropdown-item>
           </el-dropdown-menu>
         </template>
@@ -123,7 +123,7 @@ const { t, locale, translationCh, translationEn } = useTranslationLang()
   width: 100%;
   height: 48px;
   overflow: hidden;
-  
+
   .hamburger-container {
     float: left;
     height: 100%;

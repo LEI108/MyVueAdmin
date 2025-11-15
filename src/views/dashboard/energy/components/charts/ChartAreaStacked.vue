@@ -17,10 +17,15 @@ const theme = computed(() => (isDark.value ? 'dark' : 'light'))
 const chartRef = ref()
 const { setOptions } = useECharts(chartRef, { theme })
 
+function sleep(ms: number) {
+  return new Promise(resolve => setTimeout(resolve, ms))
+}
+
 watch(
   () => [props.data, props.xLabels, props.color, props.seriesName],
   async () => {
     await nextTick()
+    await sleep(200) // 延时渲染
     setOptions({
       color: [props.color],
       tooltip: {

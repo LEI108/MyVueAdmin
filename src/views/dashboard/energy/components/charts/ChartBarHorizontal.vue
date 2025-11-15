@@ -14,8 +14,13 @@ const theme = computed(() => isDark.value ? 'dark' : 'light')
 const chartRef = ref()
 const { setOptions } = useECharts(chartRef, { theme })
 
+function sleep(ms: number) {
+  return new Promise(resolve => setTimeout(resolve, ms))
+}
+
 watch(() => props.data, async () => {
   await nextTick()
+  await sleep(200) // 延时渲染
   const sorted = [...props.data].sort((a, b) => b.value - a.value)
   setOptions({
     tooltip: {

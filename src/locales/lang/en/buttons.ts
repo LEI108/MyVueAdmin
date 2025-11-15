@@ -1,5 +1,8 @@
 export default {
   buttons: {
+    accountSettings: 'Account Settings',
+    loginOut: 'Log Out',
+    backTop: 'BackTop',
     openText: 'Open',
     closeText: 'Close',
     reload: 'Reload',
@@ -9,5 +12,7 @@ export default {
     closeOtherTabs: 'Close OtherTabs',
     closeAllTabs: 'Close AllTabs',
     contentFullScreen: 'Content ExitFullScreen',
+    clickCollapse: 'Click Collapse',
+    clickExpand: 'Click Expand',
   },
 }

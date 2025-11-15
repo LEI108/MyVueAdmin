@@ -40,13 +40,23 @@ const chartRef = ref()
 // 注册 ECharts
 const { setOptions } = useECharts(chartRef, { theme })
 
+function sleep(ms: number) {
+  return new Promise(resolve => setTimeout(resolve, ms))
+}
 watch(
   () => [props.data, props.xLabels, props.color, props.seriesName],
   async () => {
     await nextTick()
+    await sleep(200)
     setOptions({
       tooltip: {
         trigger: 'axis',
+           axisPointer: {
+      type: 'cross',
+      label: {
+        backgroundColor: '#6a7985'
+      }
+    },
         backgroundColor: isDark.value ? 'rgba(40,40,40,0.9)' : 'rgba(255,255,255,0.9)',
         borderWidth: 0,
         textStyle: { color: isDark.value ? '#fff' : '#000' },

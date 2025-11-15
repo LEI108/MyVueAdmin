@@ -13,6 +13,7 @@ import {
 } from 'echarts/components'
 import * as echarts from 'echarts/core'
 import { CanvasRenderer, SVGRenderer } from 'echarts/renderers'
+// 引入自定义指令
 
 const { use } = echarts
 

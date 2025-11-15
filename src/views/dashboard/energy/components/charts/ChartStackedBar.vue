@@ -25,11 +25,15 @@ const theme = computed(() => (isDark.value ? 'dark' : 'light'))
 const chartRef = ref()
 const { setOptions } = useECharts(chartRef, { theme })
 
+function sleep(ms: number) {
+  return new Promise(resolve => setTimeout(resolve, ms))
+}
+
 watch(
   () => [props.data, props.types, props.colors, props.unit],
   async () => {
     await nextTick()
-
+    await sleep(200)
     const regions = props.data.map(d => d.region)
 
     const series: BarSeriesOption[] = props.types.map((t, ti) => ({

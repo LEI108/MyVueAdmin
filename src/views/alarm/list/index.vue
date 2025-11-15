@@ -17,7 +17,7 @@ const {
   form,
   loading,
   columns,
-  dataList,
+  pagedData,
   onExport,
   onSearch,
   resetForm,
@@ -25,6 +25,11 @@ const {
   handleDelete,
   handleSelectionChange,
   openAssignDialog,
+  pagination,
+  loadingConfig,
+  adaptiveConfig,
+  onSizeChange,
+  onCurrentChange,
 } = useAlarm()
 
 function onFullscreen() {
@@ -70,7 +75,9 @@ function onFullscreen() {
       @fullscreen="onFullscreen"
     >
       <template #buttons>
-        <el-button type="primary" @click="onExport">导出</el-button>
+        <el-button type="primary" @click="onExport">
+          导出
+        </el-button>
         <el-button type="primary" :icon="useRenderIcon(AddFill)" @click="openDialog()">
           新增故障
         </el-button>
@@ -78,21 +85,25 @@ function onFullscreen() {
       <template #default="{ size, dynamicColumns }">
         <pure-table
           ref="tableRef"
-          adaptive
-          :adaptive-config="{ offsetBottom: 45 }"
-          align-whole="center"
           row-key="id"
+          adaptive
+          :adaptive-config="adaptiveConfig"
+          align-whole="center"
           show-overflow-tooltip
           table-layout="auto"
           default-expand-all
           :loading="loading"
+          :loading-config="loadingConfig"
           :size="size"
-          :data="dataList"
+          :data="pagedData"
           :columns="dynamicColumns"
+          :pagination="pagination"
           :header-cell-style="{
             background: 'var(--el-fill-color-light)',
             color: 'var(--el-text-color-primary)',
           }"
+          @page-size-change="onSizeChange"
+          @page-current-change="onCurrentChange"
           @selection-change="handleSelectionChange"
         >
           <template #operation="{ row }">

@@ -18,6 +18,7 @@ const {
   form,
   loading,
   columns,
+  dataList,
   onExport,
   onSearch,
   openDialog,
@@ -25,13 +26,7 @@ const {
   resetForm,
   handleSelectionChange,
   openViewDialog,
-  pagedData,
-  pagination,
-  loadingConfig,
-  adaptiveConfig,
-  onSizeChange,
-  onCurrentChange,
-
+ 
 } = useWorkOrder()
 
 function onFullscreen() {
@@ -75,6 +70,7 @@ function onFullscreen() {
         <el-button :icon="useRenderIcon(Refresh)" @click="resetForm(formRef)">
           重置
         </el-button>
+       
       </el-form-item>
     </el-form>
 
@@ -87,9 +83,7 @@ function onFullscreen() {
       @fullscreen="onFullscreen"
     >
       <template #buttons>
-        <el-button type="primary" @click="onExport">
-          导出
-        </el-button>
+        <el-button type="primary" @click="onExport">导出</el-button>
         <el-button type="primary" :icon="useRenderIcon(AddFill)" @click="openDialog('新增')">
           新增工单
         </el-button>
@@ -98,24 +92,20 @@ function onFullscreen() {
         <pure-table
           ref="tableRef"
           adaptive
-          :adaptive-config="adaptiveConfig"
+          :adaptive-config="{ offsetBottom: 45 }"
           align-whole="center"
           row-key="id"
           show-overflow-tooltip
           table-layout="auto"
           default-expand-all
           :loading="loading"
-          :loading-config="loadingConfig"
           :size="size"
-          :data="pagedData"
+          :data="dataList"
           :columns="dynamicColumns"
-          :pagination="pagination"
           :header-cell-style="{
             background: 'var(--el-fill-color-light)',
             color: 'var(--el-text-color-primary)',
           }"
-          @page-size-change="onSizeChange"
-          @page-current-change="onCurrentChange"
           @selection-change="handleSelectionChange"
         >
           <template #operation="{ row }">

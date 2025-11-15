@@ -1,16 +1,16 @@
-import type { AdaptiveConfig, LoadingConfig, PaginationProps } from '@pureadmin/table'
 import type { WorkOrderFormProps, WorkOrderItem } from './types'
+import type { ExportColumn } from '@/utils/excel/exportExcel'
 import { deviceDetection, isAllEmpty } from '@pureadmin/utils'
 import dayjs from 'dayjs'
-import { computed, h, onMounted, reactive, ref } from 'vue'
+import { h, onMounted, reactive, ref } from 'vue'
 import { addWorkOrder, deleteWorkOrder, getWorkOrderList, updateAlarmStatus, updateWorkOrder } from '@/api/workorder'
 import { addDialog } from '@/components/ReDialog'
-import { buildExportColumnsFromTable } from '@/utils/excel/buildExportColumns'
 import { exportExcel } from '@/utils/excel/exportExcel'
 import { message } from '@/utils/message'
 import { usePublicHooks } from '../../hooks'
 import detailView from '../components/detailView.vue'
 import editForm from '../components/form.vue'
+import { buildExportColumnsFromTable } from "@/utils/excel/buildExportColumns"
 
 export function useWorkOrder() {
   const form = reactive({
@@ -24,58 +24,15 @@ export function useWorkOrder() {
   const loading = ref(true)
   const { priorityTagStyle, processStatusTagStyle } = usePublicHooks()
 
-  const pagination = reactive<PaginationProps>({
-    total: 0,
-    pageSize: 20,
-    currentPage: 1,
-    background: true,
-    align: 'right',
-    size: 'default',
-  })
-
-  // 加载动画配置（可选）
-  const loadingConfig = reactive<LoadingConfig>({
-    text: '正在加载第一页...',
-    viewBox: '-10, -10, 50, 50',
-    spinner: `
-      <path class="path" d="
-        M 30 15
-        L 28 17
-        M 25.61 25.61
-        A 15 15, 0, 0, 1, 15 30
-        A 15 15, 0, 1, 1, 27.99 7.5
-        L 15 15
-      " style="stroke-width: 4px; fill: rgba(0, 0, 0, 0)"/>
-    `,
-  })
-
-  // 撑满内容区自适应高度（保持滚动）
-  const adaptiveConfig: AdaptiveConfig = {
-    offsetBottom: 110, // 可按页面结构微调；你原来是 45，如果空间紧张可以继续用 45
-    /** 是否固定表头，默认值为 `true`（如果不想固定表头，fixHeader设置为false并且表格要设置table-layout="auto"） */
-    fixHeader: true,
-    /** 页面 `resize` 时的防抖时间，默认值为 `60` ms */
-    timeout: 60,
-    /** 表头的 `z-index`，默认值为 `100` */
-    // zIndex: 100
-  }
-
-  // 当前页数据（用于表格 data）
-  const pagedData = computed(() => {
-    const start = (pagination.currentPage - 1) * pagination.pageSize
-    const end = start + pagination.pageSize
-    return dataList.value.slice(start, end)
-  })
-
   const columns: TableColumnList = [
     { label: '勾选列', type: 'selection', fixed: 'left', reserveSelection: true },
-    { label: '工单编号', prop: 'workOrderCode', minWidth: 90 },
-    { label: '指派人员', prop: 'assignee', minWidth: 90 },
+    { label: '工单编号', prop: 'workOrderCode', minWidth: 140 },
+    { label: '指派人员', prop: 'assignee', minWidth: 100 },
     { label: '电话', prop: 'assigneePhone', minWidth: 120 },
-    { label: '工号', prop: 'assigneeJobNo', minWidth: 90 },
+    { label: '工号', prop: 'assigneeJobNo', minWidth: 100 },
     { label: '工单描述', prop: 'description', minWidth: 250 },
-    { label: '类型', prop: 'type', minWidth: 90 },
-    { label: '设备编号', prop: 'deviceCode', minWidth: 90 },
+    { label: '类型', prop: 'type', minWidth: 100 },
+    { label: '设备编号', prop: 'deviceCode', minWidth: 120 },
     { label: '设备地点', prop: 'deviceAddress', minWidth: 150 },
     { label: '创建时间', prop: 'createTime', minWidth: 180 },
     { label: '截止时间', prop: 'deadline', minWidth: 180 },
@@ -141,10 +98,6 @@ export function useWorkOrder() {
     }
 
     dataList.value = newData
-
-    pagination.total = newData.length
-    pagination.currentPage = 1
-
     setTimeout(() => (loading.value = false), 500)
   }
 
@@ -204,39 +157,24 @@ export function useWorkOrder() {
     })
   }
 
-  function onExport() {
-    const exportColumns = buildExportColumnsFromTable(columns, {
-      fieldFormatters: {
-        status: row => ({ 1: '待处理', 2: '处理中', 3: '已完成' }[row.status] ?? ''),
-        priority: row => ({ 1: '低', 2: '中', 3: '高' }[row.priority] ?? ''),
+function onExport() {
+  const exportColumns = buildExportColumnsFromTable(columns, {
+    fieldFormatters: {
+      status: row => ({ 1: "待处理", 2: "处理中", 3: "已完成" }[row.status] ?? ""),
+      priority: row => ({ 1: "低", 2: "中", 3: "高" }[row.priority] ?? "")
       // 时间类字段可交由 exportExcel 自动处理；也可以在此覆盖
       // createTime: row => dayjs(row.createTime).format("YYYY-MM-DD HH:mm:ss")
-      },
-    })
+    }
+  })
 
-    exportExcel(
-      dataList.value,
-      exportColumns,
-      `工单报表_${dayjs().format('YYYYMMDD_HHmmss')}.xlsx`,
-      '工单数据',
-    )
-    message('导出成功', { type: 'success' })
-  }
-
-  function onSizeChange(val) {
-    pagination.pageSize = val
-    pagination.currentPage = 1
-  }
-
-  function onCurrentChange(val) {
-    loadingConfig.text = `正在加载第${val}页...`
-    loading.value = true
-    pagination.currentPage = val
-    setTimeout(() => {
-      loading.value = false
-    }, 600)
-  }
-
+  exportExcel(
+    dataList.value,
+    exportColumns,
+    `工单报表_${dayjs().format("YYYYMMDD_HHmmss")}.xlsx`,
+    "工单数据"
+  )
+  message("导出成功", { type: "success" })
+}
   onMounted(onSearch)
 
   return {
@@ -252,11 +190,5 @@ export function useWorkOrder() {
     handleStatusChange,
     resetForm,
     handleSelectionChange,
-    pagination,
-    onSizeChange,
-    onCurrentChange,
-    loadingConfig,
-    adaptiveConfig,
-    pagedData,
   }
 }

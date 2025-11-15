@@ -67,7 +67,7 @@ const { isDark } = useDark()
         :sm="12"
         :xs="24"
         :initial="{ opacity: 0, y: 100 }"
-        :enter="{ opacity: 1, y: 0, transition: { delay: 160 } }"
+        :enter="{ opacity: 1, y: 0, transition: { delay: 240 } }"
       >
         <el-card class="line-card" shadow="never">
           <div class="flex justify-between">
@@ -96,7 +96,7 @@ const { isDark } = useDark()
         :sm="12"
         :xs="24"
         :initial="{ opacity: 0, y: 100 }"
-        :enter="{ opacity: 1, y: 0, transition: { delay: 160 } }"
+        :enter="{ opacity: 1, y: 0, transition: { delay: 320 } }"
       >
         <el-card class="line-card" shadow="never">
           <div class="flex justify-between">
@@ -125,7 +125,7 @@ const { isDark } = useDark()
         :sm="12"
         :xs="24"
         :initial="{ opacity: 0, y: 100 }"
-        :enter="{ opacity: 1, y: 0, transition: { delay: 160 } }"
+        :enter="{ opacity: 1, y: 0, transition: { delay: 400 } }"
       >
         <el-card class="line-card" shadow="never">
           <div class="flex justify-between">
@@ -142,7 +142,6 @@ const { isDark } = useDark()
           </div>
           <div class="flex justify-between items-start mt-3">
             <ChartAreaStacked
-              class="mt-3"
               :color="isDark ? '#66ccff' : '#41b6ff'"
               :x-labels="curYearIndex === 0 ? xLabelsQuarter.y2023 : curYearIndex === 1 ? xLabelsQuarter.y2024 : xLabelsQuarter.y2025"
               :data="curYearIndex === 0 ? generationDataQuarter.y2023 : curYearIndex === 1 ? generationDataQuarter.y2024 : generationDataQuarter.y2025"

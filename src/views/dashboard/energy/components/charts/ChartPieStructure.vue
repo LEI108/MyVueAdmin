@@ -20,11 +20,15 @@ const theme = computed(() => (isDark.value ? 'dark' : 'light'))
 
 const chartRef = ref()
 const { setOptions } = useECharts(chartRef, { theme })
+function sleep(ms: number) {
+  return new Promise(resolve => setTimeout(resolve, ms))
+}
 
 watch(
   () => [props.data, props.colors, props.unit, props.donut],
   async () => {
     await nextTick()
+    await sleep(200)
     setOptions({
       color: props.colors,
       tooltip: {
@@ -49,7 +53,8 @@ watch(
         {
           name: '产能结构',
           type: 'pie',
-          radius: props.donut ? ['40%', '65%'] : '65%',
+          radius: props.donut ? ['40%', '70%'] : '65%',
+          padAngle: 5, // 扇区间隙
           center: ['40%', '50%'],
           avoidLabelOverlap: true,
           label: {
@@ -66,6 +71,7 @@ watch(
           itemStyle: {
             borderColor: isDark.value ? 'rgba(0,0,0,0.2)' : '#fff',
             borderWidth: 1,
+            borderRadius: 8,
           },
           emphasis: {
             scale: true,

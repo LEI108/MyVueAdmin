@@ -1,17 +1,18 @@
+import type { AdaptiveConfig, LoadingConfig, PaginationProps } from '@pureadmin/table'
 import type { AlarmItem, FormItemProps } from './types'
 import { deviceDetection, isAllEmpty } from '@pureadmin/utils'
 import dayjs from 'dayjs'
 import { ElButton } from 'element-plus'
-import { h, onMounted, reactive, ref } from 'vue'
+import { computed, h, onMounted, reactive, ref } from 'vue'
 import { addAlarm, assignAlarm, deleteAlarm, getAlarmList, updateAlarm } from '@/api/alarm'
 import { addWorkOrder } from '@/api/workorder' // 新增引入工单接口
 import { addDialog, closeDialog } from '@/components/ReDialog'
+import { buildExportColumnsFromTable } from '@/utils/excel/buildExportColumns'
+import { exportExcel } from '@/utils/excel/exportExcel'
 import { message } from '@/utils/message'
 import { usePublicHooks } from '../../hooks'
 import assignForm from '../components/assignForm.vue'
 import editForm from '../components/form.vue'
-import { exportExcel } from "@/utils/excel/exportExcel"
-import { buildExportColumnsFromTable } from "@/utils/excel/buildExportColumns"
 
 export function useAlarm() {
   const form = reactive({
@@ -23,6 +24,49 @@ export function useAlarm() {
   const dataList = ref<AlarmItem[]>([])
   const loading = ref(true)
   const { alarmLevelTagStyle, processStatusTagStyle } = usePublicHooks()
+
+  const pagination = reactive<PaginationProps>({
+    total: 0,
+    pageSize: 20,
+    currentPage: 1,
+    background: true,
+    align: 'right',
+    size: 'default',
+  })
+
+  // 加载动画配置（可选）
+  const loadingConfig = reactive<LoadingConfig>({
+    text: '正在加载第一页...',
+    viewBox: '-10, -10, 50, 50',
+    spinner: `
+      <path class="path" d="
+        M 30 15
+        L 28 17
+        M 25.61 25.61
+        A 15 15, 0, 0, 1, 15 30
+        A 15 15, 0, 1, 1, 27.99 7.5
+        L 15 15
+      " style="stroke-width: 4px; fill: rgba(0, 0, 0, 0)"/>
+    `,
+  })
+
+  // 撑满内容区自适应高度（保持滚动）
+  const adaptiveConfig: AdaptiveConfig = {
+    offsetBottom: 110, // 可按页面结构微调；你原来是 45，如果空间紧张可以继续用 45
+    /** 是否固定表头，默认值为 `true`（如果不想固定表头，fixHeader设置为false并且表格要设置table-layout="auto"） */
+    fixHeader: true,
+    /** 页面 `resize` 时的防抖时间，默认值为 `60` ms */
+    timeout: 60,
+    /** 表头的 `z-index`，默认值为 `100` */
+    // zIndex: 100
+  }
+
+  // 当前页数据（用于表格 data）
+  const pagedData = computed(() => {
+    const start = (pagination.currentPage - 1) * pagination.pageSize
+    const end = start + pagination.pageSize
+    return dataList.value.slice(start, end)
+  })
 
   const columns: TableColumnList = [
     { label: '勾选列', type: 'selection', fixed: 'left', reserveSelection: true },
@@ -79,6 +123,10 @@ export function useAlarm() {
       newData = newData.filter(item => item.status === form.status)
     }
     dataList.value = newData
+
+    pagination.total = newData.length
+    pagination.currentPage = 1
+
     setTimeout(() => {
       loading.value = false
     }, 500)
@@ -216,24 +264,37 @@ export function useAlarm() {
     })
   }
 
-
   function onExport() {
-  const exportColumns = buildExportColumnsFromTable(columns, {
-    fieldFormatters: {
-      alarmTime: row => dayjs(row.alarmTime).format("YYYY-MM-DD HH:mm:ss"),
-      alarmLevel: row => ({ 1: "轻微", 2: "中等", 3: "严重" }[row.alarmLevel] ?? ""),
-      status: row => ({ 1: "待指派", 2: "处理中", 3: "已完成" }[row.status] ?? "")
-    }
-  })
+    const exportColumns = buildExportColumnsFromTable(columns, {
+      fieldFormatters: {
+        alarmTime: row => dayjs(row.alarmTime).format('YYYY-MM-DD HH:mm:ss'),
+        alarmLevel: row => ({ 1: '轻微', 2: '中等', 3: '严重' }[row.alarmLevel] ?? ''),
+        status: row => ({ 1: '待指派', 2: '处理中', 3: '已完成' }[row.status] ?? ''),
+      },
+    })
 
-  exportExcel(
-    dataList.value,
-    exportColumns,
-    `告警报表_${dayjs().format("YYYYMMDD_HHmmss")}.xlsx`,
-    "告警数据"
-  )
-  message("导出成功", { type: "success" })
-}
+    exportExcel(
+      dataList.value,
+      exportColumns,
+      `告警报表_${dayjs().format('YYYYMMDD_HHmmss')}.xlsx`,
+      '告警数据',
+    )
+    message('导出成功', { type: 'success' })
+  }
+
+  function onSizeChange(val) {
+    pagination.pageSize = val
+    pagination.currentPage = 1
+  }
+
+  function onCurrentChange(val) {
+    loadingConfig.text = `正在加载第${val}页...`
+    loading.value = true
+    pagination.currentPage = val
+    setTimeout(() => {
+      loading.value = false
+    }, 600)
+  }
 
   onMounted(() => {
     onSearch()
@@ -248,8 +309,14 @@ export function useAlarm() {
     onSearch,
     resetForm,
     openDialog,
+    pagination,
     handleDelete,
     handleSelectionChange,
     openAssignDialog,
+    loadingConfig,
+    adaptiveConfig,
+    pagedData,
+    onSizeChange,
+    onCurrentChange,
   }
 }

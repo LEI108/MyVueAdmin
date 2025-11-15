@@ -1,35 +1,23 @@
 <script setup lang="ts">
-import type { OptionsType } from '@/components/ReSegmented'
 import { markRaw, ref } from 'vue'
 import ReCol from '@/components/ReCol'
-import { ReNormalCountTo } from '@/components/ReCountTo/index'
-import { useRenderFlicker } from '@/components/ReFlicker/index'
-import Segmented from '@/components/ReSegmented'
-import { ChartBar, ChartLine, ChartRound } from './components/charts/index'
-import WelcomeTable from './components/table/index.vue'
-import { barChartData, chartData, latestNewsData, progressData } from './data'
+import { ReNormalCountTo } from '@/components/ReCountTo'
+import { useRenderFlicker } from '@/components/ReFlicker'
+import AlarmTableLite from './components/alarm/list/AlarmTableLite.vue'
+import ChartDeviceDist from './components/charts/ChartDeviceDist.vue'
+import ChartGenOverview from './components/charts/ChartGenOverview.vue'
+import { ChartLine, ChartRound } from './components/charts/index' // 已有简单线图/圆图
+import { chartData, deviceDistData, genOverviewData, latestOpsData } from './data'
 import { randomGradient, useDark } from './utils'
 
-defineOptions({
-  name: 'Welcome',
-})
-
+defineOptions({ name: 'Home' })
 const { isDark } = useDark()
-
-const curWeek = ref(1) // 0上周、1本周
-const optionsBasis: Array<OptionsType> = [
-  {
-    label: '上周',
-  },
-  {
-    label: '本周',
-  },
-]
 </script>
 
 <template>
   <div>
     <el-row :gutter="24" justify="space-around">
+      <!-- 顶部4个指标卡 -->
       <ReCol
         v-for="(item, index) in chartData"
         :key="index"
@@ -53,21 +41,12 @@ const optionsBasis: Array<OptionsType> = [
       >
         <el-card class="line-card" shadow="never">
           <div class="flex justify-between">
-            <span class="text-md font-medium">
-              {{ item.name }}
-            </span>
+            <span class="text-md font-medium">{{ item.name }}</span>
             <div
               class="w-8 h-8 flex justify-center items-center rounded-md"
-              :style="{
-                backgroundColor: isDark ? 'transparent' : item.bgColor,
-              }"
+              :style="{ backgroundColor: isDark ? 'transparent' : item.bgColor }"
             >
-              <IconifyIconOffline
-                :icon="item.icon"
-                :color="item.color"
-                width="18"
-                height="18"
-              />
+              <IconifyIconOffline :icon="item.icon" :color="item.color" width="18" height="18" />
             </div>
           </div>
           <div class="flex justify-between items-start mt-3">
@@ -75,24 +54,20 @@ const optionsBasis: Array<OptionsType> = [
               <ReNormalCountTo
                 :duration="item.duration"
                 font-size="1.6em"
-                :start-val="100"
+                :start-val="0"
                 :end-val="item.value"
               />
               <p class="font-medium text-green-500">
                 {{ item.percent }}
               </p>
             </div>
-            <ChartLine
-              v-if="item.data.length > 1"
-              class="w-1/2!"
-              :color="item.color"
-              :data="item.data"
-            />
+            <ChartLine v-if="item.data.length > 1" class="w-1/2!" :color="item.color" :data="item.data" />
             <ChartRound v-else class="w-1/2!" />
           </div>
         </el-card>
       </ReCol>
 
+      <!-- 发电概览 -->
       <ReCol
         v-motion
         class="mb-[18px]"
@@ -110,20 +85,15 @@ const optionsBasis: Array<OptionsType> = [
           },
         }"
       >
-        <el-card class="bar-card" shadow="never">
-          <div class="flex justify-between">
-            <span class="text-md font-medium">分析概览</span>
-            <Segmented v-model="curWeek" :options="optionsBasis" />
+        <el-card shadow="never">
+          <div class="flex justify-between mb-3">
+            <span class="text-md font-medium">发电概览</span>
           </div>
-          <div class="flex justify-between items-start mt-3">
-            <ChartBar
-              :require-data="barChartData[curWeek].requireData"
-              :question-data="barChartData[curWeek].questionData"
-            />
-          </div>
+          <ChartGenOverview :hours="genOverviewData.hours" :power="genOverviewData.power" :energy="genOverviewData.energy" />
         </el-card>
       </ReCol>
 
+      <!-- 设备分布 -->
       <ReCol
         v-motion
         class="mb-[18px]"
@@ -142,32 +112,14 @@ const optionsBasis: Array<OptionsType> = [
         }"
       >
         <el-card shadow="never">
-          <div class="flex justify-between">
-            <span class="text-md font-medium">解决概率</span>
+          <div class="flex justify-between mb-3">
+            <span class="text-md font-medium">设备分布</span>
           </div>
-          <div
-            v-for="(item, index) in progressData"
-            :key="index"
-            class="flex justify-between items-start" :class="[
-              index === 0 ? 'mt-8' : 'mt-[2.15rem]',
-            ]"
-          >
-            <el-progress
-              :text-inside="true"
-              :percentage="item.percentage"
-              :stroke-width="21"
-              :color="item.color"
-              striped
-              striped-flow
-              :duration="item.duration"
-            />
-            <span class="text-nowrap ml-2 text-text_color_regular text-sm">
-              {{ item.week }}
-            </span>
-          </div>
+          <ChartDeviceDist :data="deviceDistData" />
         </el-card>
       </ReCol>
 
+      <!-- 预警信息表 -->
       <ReCol
         v-motion
         class="mb-[18px]"
@@ -185,14 +137,15 @@ const optionsBasis: Array<OptionsType> = [
           },
         }"
       >
-        <el-card shadow="never" class="h-[580px]">
+        <el-card shadow="never" class="h-[575px]">
           <div class="flex justify-between">
-            <span class="text-md font-medium">数据统计</span>
+            <span class="text-md font-medium">预警信息</span>
           </div>
-          <WelcomeTable class="mt-3" />
+          <AlarmTableLite class="mt-3" />
         </el-card>
       </ReCol>
 
+      <!-- 最近操作动态 -->
       <ReCol
         v-motion
         class="mb-[18px]"
@@ -211,31 +164,21 @@ const optionsBasis: Array<OptionsType> = [
         }"
       >
         <el-card shadow="never">
-          <div class="flex justify-between">
-            <span class="text-md font-medium">最新动态</span>
+          <div class="flex justify-between mb-3">
+            <span class="text-md font-medium">最近操作动态</span>
           </div>
-          <el-scrollbar max-height="504" class="mt-3">
+          <el-scrollbar max-height="504">
             <el-timeline>
               <el-timeline-item
-                v-for="(item, index) in latestNewsData"
+                v-for="(item, index) in latestOpsData"
                 :key="index"
                 center
                 placement="top"
-                :icon="
-                  markRaw(
-                    useRenderFlicker({
-                      background: randomGradient({
-                        randomizeHue: true,
-                      }),
-                    }),
-                  )
-                "
+                :icon="markRaw(useRenderFlicker({ background: randomGradient({ randomizeHue: true }) }))"
                 :timestamp="item.date"
               >
                 <p class="text-text_color_regular text-sm">
-                  {{
-                    `新增 ${item.requiredNumber} 条问题，${item.resolveNumber} 条已解决`
-                  }}
+                  {{ item.content }}
                 </p>
               </el-timeline-item>
             </el-timeline>
@@ -250,28 +193,11 @@ const optionsBasis: Array<OptionsType> = [
 :deep(.el-card) {
   --el-card-border-color: none;
 
-  /* 解决概率进度条宽度 */
-  .el-progress--line {
-    width: 85%;
-  }
-
-  /* 解决概率进度条字体大小 */
-  .el-progress-bar__innerText {
-    font-size: 15px;
-  }
-
-  /* 隐藏 el-scrollbar 滚动条 */
   .el-scrollbar__bar {
     display: none;
   }
-
-  /* el-timeline 每一项上下、左右边距 */
   .el-timeline-item {
     margin: 0 6px;
   }
-}
-
-.main-content {
-  margin: 20px 20px 0 !important;
 }
 </style>
