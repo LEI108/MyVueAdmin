@@ -77,8 +77,8 @@ export function useWorkOrder() {
     { label: '类型', prop: 'type', minWidth: 90 },
     { label: '设备编号', prop: 'deviceCode', minWidth: 90 },
     { label: '设备地点', prop: 'deviceAddress', minWidth: 150 },
-    { label: '创建时间', prop: 'createTime', minWidth: 180 },
-    { label: '截止时间', prop: 'deadline', minWidth: 180 },
+    { label: '创建时间', prop: 'createTime', minWidth: 180, sortable: true },
+    { label: '截止时间', prop: 'deadline', minWidth: 180, sortable: true },
     {
       label: '状态',
       prop: 'status',
@@ -128,7 +128,7 @@ export function useWorkOrder() {
     if (!isAllEmpty(form.status)) {
       newData = newData.filter(item => item.status === form.status)
     }
-
+    // 按创建时间段过滤
     if (form.timeRange && form.timeRange.length === 2) {
       const [start, end] = form.timeRange
       const startTs = dayjs(start).valueOf()
@@ -141,10 +141,8 @@ export function useWorkOrder() {
     }
 
     dataList.value = newData
-
     pagination.total = newData.length
     pagination.currentPage = 1
-
     setTimeout(() => (loading.value = false), 500)
   }
 

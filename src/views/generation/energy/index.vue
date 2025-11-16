@@ -1,10 +1,14 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
+import PhChartBar from '~icons/ph/chart-bar'
+import PhChartLine from '~icons/ph/chart-line'
+import PhChartPieSlice from '~icons/ph/chart-pie-slice'
+import Users from '~icons/ph/users'
 import ReCol from '@/components/ReCol'
 // import { ReNormalCountTo } from '@/components/ReCountTo/index'
 import Segmented from '@/components/ReSegmented'
-import { ChartAreaStacked, ChartBarHorizontal, ChartPieStructure, ChartStackedBar } from './components/charts/index'
 
+import { ChartAreaStacked, ChartBarHorizontal, ChartPieStructure, ChartStackedBar } from './components/charts/index'
 import {
   barHorizontalData,
   energyTypes,
@@ -14,6 +18,7 @@ import {
   xLabelsQuarter,
   years,
 } from './data'
+
 import { useDark } from './utils'
 
 defineOptions({
@@ -49,7 +54,7 @@ const { isDark } = useDark()
                 backgroundColor: isDark ? 'transparent' : '#ffffff',
               }"
             >
-              <IconifyIconOffline icon="ri:group-line" color="#41b6ff" width="18" height="18" />
+              <IconifyIconOffline :icon="PhChartBar" color="#41b6ff" width="24" height="24" />
             </div>
           </div>
           <div class="flex justify-between items-start mt-3">
@@ -78,7 +83,7 @@ const { isDark } = useDark()
                 backgroundColor: isDark ? 'transparent' : '#ffffff',
               }"
             >
-              <IconifyIconOffline icon="solar:energy-bold" color="" width="18" height="18" />
+              <IconifyIconOffline :icon="PhChartPieSlice" color="#FF9A2E" width="24" height="24" />
             </div>
           </div>
           <div class="flex justify-between items-start mt-3">
@@ -107,7 +112,7 @@ const { isDark } = useDark()
                 backgroundColor: isDark ? 'transparent' : '#ffffff',
               }"
             >
-              <IconifyIconOffline icon="solar:energy-bold" color="#41b6ff" width="18" height="18" />
+              <IconifyIconOffline :icon="PhChartBar" color="#41b6ff" width="24" height="24" />
             </div>
           </div>
           <div class="flex justify-between items-start mt-3">
@@ -136,7 +141,7 @@ const { isDark } = useDark()
                 backgroundColor: isDark ? 'transparent' : '#ffffff',
               }"
             >
-              <IconifyIconOffline icon="solar:energy-bold" color="#41b6ff" width="18" height="18" />
+              <IconifyIconOffline :icon="PhChartLine" color="#37D4CF" width="24" height="24" />
             </div>
             <Segmented v-model="curYearIndex" :options="periodOptions" />
           </div>

@@ -22,17 +22,5 @@ export default {
       component: () => import('@/views/devices/status/index.vue'),
       meta: { title: $t('menus.deviceStatus') },
     },
-    {
-      path: '/devices/repair-record',
-      name: 'RepairRecord',
-      component: () => import('@/views/devices/repair-record/index.vue'),
-      meta: { title: $t('menus.repairRecord') },
-    },
-    {
-      path: '/devices/work-order',
-      name: 'WorkOrder',
-      component: () => import('@/views/devices/work-order/index.vue'),
-      meta: { title: $t('menus.workOrder') },
-    },
   ],
 } satisfies RouteConfigsTable

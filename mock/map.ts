@@ -109,10 +109,10 @@ function generateStatsData(devices: DeviceInfo[]) {
  */
 function convertCountByTypeUI(countByType: Record<DeviceType, number>): DeviceTypeStatsUI[] {
   const typeInfoMap: Record<DeviceType, Omit<DeviceTypeStatsUI, 'type' | 'count'>> = {
-    pv: { name: '光伏板', icon: 'mdi:solar-power', color: '#ffb400', bgColor: '#fff8e1' },
-    battery: { name: '储能电池', icon: 'mdi:battery', color: '#26ce83', bgColor: '#e6fff5' },
-    charger: { name: '充电桩', icon: 'mdi:ev-station', color: '#41b6ff', bgColor: '#effaff' },
-    inverter: { name: '逆变器', icon: 'mdi:engine', color: '#e85f33', bgColor: '#fff5f4' },
+    pv: { name: '光伏板', icon: 'ph/solar-panel', color: '#ffb400', bgColor: '#fff8e1' },
+    battery: { name: '储能电池', icon: 'ph/battery-charging-vertical', color: '#26ce83', bgColor: '#e6fff5' },
+    charger: { name: '充电桩', icon: 'ph/charging-station', color: '#41b6ff', bgColor: '#effaff' },
+    inverter: { name: '逆变器', icon: 'ph/computer-tower', color: '#e85f33', bgColor: '#fff5f4' },
   }
 
   return (Object.entries(countByType) as [DeviceType, number][])

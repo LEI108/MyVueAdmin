@@ -3,7 +3,6 @@ import { addIcon } from '@iconify/vue/dist/offline'
 import { getSvgInfo } from '@pureadmin/utils'
 
 import EpEdit from '~icons/ep/edit?raw'
-import EpGuide from '~icons/ep/guide?raw'
 import EpHistogram from '~icons/ep/histogram?raw'
 import EpHomeFilled from '~icons/ep/home-filled?raw'
 import EpLollipop from '~icons/ep/lollipop?raw'
@@ -15,22 +14,27 @@ import EpSetUp from '~icons/ep/set-up?raw'
 import PhArrowsHorizontal from '~icons/ph/arrows-horizontal?raw'
 import PhArrowsInSimple from '~icons/ph/arrows-in-simple?raw'
 import PhBag from '~icons/ph/bag?raw'
+import PhBatteryChargingVertical from '~icons/ph/battery-charging-vertical?raw'
 import PhBellRinging from '~icons/ph/bell-ringing?raw'
 import PhBell from '~icons/ph/bell?raw'
-import PhCalculator from '~icons/ph/calculator?raw'
 import PhCarBattery from '~icons/ph/car-battery?raw'
 import PhCaretDown from '~icons/ph/caret-down?raw'
+import PhChargingStation from '~icons/ph/charging-station?raw'
 import PhChartBar from '~icons/ph/chart-bar?raw'
+import PhChartLine from '~icons/ph/chart-line?raw'
+import PhChartPieSlice from '~icons/ph/chart-pie-slice?raw'
 import PhClipboardText from '~icons/ph/clipboard-text?raw'
+import PhClover from '~icons/ph/clover?raw'
+import PhComputerTower from '~icons/ph/computer-tower?raw'
 import PhCornersOut from '~icons/ph/corners-out?raw'
 import PhCreditCard from '~icons/ph/credit-card?raw'
 import PhCurrencyDollar from '~icons/ph/currency-dollar?raw'
 import PhDevices from '~icons/ph/devices?raw'
 import PhFileText from '~icons/ph/file-text?raw'
 import PhFolder from '~icons/ph/folder?raw'
-import PhGauge from '~icons/ph/gauge?raw'
 import PhGearSix from '~icons/ph/gear-six?raw'
 import PhHandshake from '~icons/ph/handshake?raw'
+import PhLeaf from '~icons/ph/leaf?raw'
 import PhLink from '~icons/ph/link?raw'
 import PhListBullets from '~icons/ph/list-bullets?raw'
 import PhLockKey from '~icons/ph/lock-key?raw'
@@ -43,17 +47,17 @@ import PhNotification from '~icons/ph/notification?raw'
 import PhPhosphorLogo from '~icons/ph/phosphor-logo?raw'
 import PhSidebarSimple from '~icons/ph/sidebar-simple?raw'
 import PhSignOut from '~icons/ph/sign-out?raw'
+import PhSolarPanel from '~icons/ph/solar-panel?raw'
 import PhSquareHalf from '~icons/ph/square-half?raw'
 import PhSun from '~icons/ph/sun?raw'
-import PhTicket from '~icons/ph/ticket?raw'
 import PhTranslate from '~icons/ph/translate?raw'
 import PhUserCircle from '~icons/ph/user-circle?raw'
 import PhUserSquare from '~icons/ph/user-square?raw'
 import PhUser from '~icons/ph/user?raw'
 import PhUsersThree from '~icons/ph/users-three?raw'
+import PhUsers from '~icons/ph/users?raw'
 import PhWarningCircle from '~icons/ph/warning-circle?raw'
 import PhX from '~icons/ph/x?raw'
-
 import RiAdminFill from '~icons/ri/admin-fill?raw'
 import RiAdminLine from '~icons/ri/admin-line?raw'
 import RiArtboardLine from '~icons/ri/artboard-line?raw'
@@ -65,10 +69,8 @@ import RiCheckboxCircleLine from '~icons/ri/checkbox-circle-line?raw'
 import RiCodeBoxLine from '~icons/ri/code-box-line?raw'
 import RiEditBoxLine from '~icons/ri/edit-box-line?raw'
 import RiFileInfoLine from '~icons/ri/file-info-line?raw'
-import RiFilePpt2Line from '~icons/ri/file-ppt-2-line?raw'
 import RiFileSearchLine from '~icons/ri/file-search-line?raw'
 import RiGitBranchLine from '~icons/ri/git-branch-line?raw'
-import RiHistoryFill from '~icons/ri/history-fill?raw'
 import RiInformationLine from '~icons/ri/information-line?raw'
 import RiLinksFill from '~icons/ri/links-fill?raw'
 import RiListCheck from '~icons/ri/list-check?raw'
@@ -79,7 +81,6 @@ import RiSearchLine from '~icons/ri/search-line?raw'
 import RiSettings3Line from '~icons/ri/settings-3-line?raw'
 import RiTableLine from '~icons/ri/table-line?raw'
 import RiTerminalWindowLine from '~icons/ri/terminal-window-line?raw'
-import RiUbuntuFill from '~icons/ri/ubuntu-fill?raw'
 import RiUserVoiceLine from '~icons/ri/user-voice-line?raw'
 import RiWindowLine from '~icons/ri/window-line?raw'
 
@@ -99,7 +100,6 @@ const icons = [
   ['ph/bag', PhBag],
   ['ph/bell', PhBell],
   ['ph/bell-ringing', PhBellRinging],
-  ['ph/calculator', PhCalculator],
   ['ph/car-battery', PhCarBattery],
   ['ph/caret-down', PhCaretDown],
   ['ph/chart-bar', PhChartBar],
@@ -109,7 +109,6 @@ const icons = [
   ['ph/currency-dollar', PhCurrencyDollar],
   ['ph/file-text', PhFileText],
   ['ph/folder', PhFolder],
-  ['ph/gauge', PhGauge],
   ['ph/gear-six', PhGearSix],
   ['ph/handshake', PhHandshake],
   ['ph/link', PhLink],
@@ -126,7 +125,6 @@ const icons = [
   ['ph/sign-out', PhSignOut],
   ['ph/square-half', PhSquareHalf],
   ['ph/sun', PhSun],
-  ['ph/ticket', PhTicket],
   ['ph/translate', PhTranslate],
   ['ph/user', PhUser],
   ['ph/user-circle', PhUserCircle],
@@ -135,10 +133,19 @@ const icons = [
   ['ph/x', PhX],
   ['ph/users-three', PhUsersThree],
   ['ph/devices', PhDevices],
+  ['ph/solar-panel', PhSolarPanel],
+  ['ph/battery-charging-vertical', PhBatteryChargingVertical],
+  ['ph/charging-station', PhChargingStation],
+  ['ph/computer-tower', PhComputerTower],
+  ['ph/users', PhUsers],
+  ['ph/chart-pie-slice', PhChartPieSlice],
+  ['ph/chart-line', PhChartLine],
+  ['ph/leaf', PhLeaf],
+  ['ph/clover', PhClover],
+
   // Element Plus Icon: https://github.com/element-plus/element-plus-icons
   ['ep/menu', EpMenu],
   ['ep/edit', EpEdit],
-  ['ep/guide', EpGuide],
   ['ep/set-up', EpSetUp],
   ['ep/monitor', EpMonitor],
   ['ep/lollipop', EpLollipop],
@@ -153,15 +160,12 @@ const icons = [
   ['ri/list-check', RiListCheck],
   ['ri/search-line', RiSearchLine],
   ['ri/window-line', RiWindowLine],
-  ['ri/ubuntu-fill', RiUbuntuFill],
-  ['ri/history-fill', RiHistoryFill],
   ['ri/edit-box-line', RiEditBoxLine],
   ['ri/code-box-line', RiCodeBoxLine],
   ['ri/artboard-line', RiArtboardLine],
   ['ri/markdown-line', RiMarkdownLine],
   ['ri/file-info-line', RiFileInfoLine],
   ['ri/bank-card-line', RiBankCardLine],
-  ['ri/file-ppt-2-line', RiFilePpt2Line],
   ['ri/git-branch-line', RiGitBranchLine],
   ['ri/settings-3-line', RiSettings3Line],
   ['ri/user-voice-line', RiUserVoiceLine],

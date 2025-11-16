@@ -77,7 +77,7 @@ const { isDark } = useDark()
                   backgroundColor: isDark ? 'transparent' : '#effaff',
                 }"
               >
-                <IconifyIconOffline icon="mdi:alert" color="#F56C6C" width="18" height="18" />
+                <IconifyIconOffline icon="ri/information-line" color="#F56C6C" width="18" height="18" />
               </div>
               <span class="text-sm">{{ stats.highestFaultArea || '暂无数据' }}</span>
             </div>
@@ -97,7 +97,7 @@ const { isDark } = useDark()
                   backgroundColor: isDark ? 'transparent' : '#effaff',
                 }"
               >
-                <IconifyIconOffline icon="mdi:medal" color="#67C23A" width="18" height="18" />
+                <IconifyIconOffline icon="ri/bank-card-line" color="#67C23A" width="18" height="18" />
               </div>
               <span class="text-sm">{{ stats.highestRevenueArea || '暂无数据' }}</span>
             </div>

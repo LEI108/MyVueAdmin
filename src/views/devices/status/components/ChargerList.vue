@@ -35,6 +35,7 @@ const _props = defineProps<{
 <style lang="scss" scoped>
 .charger-col {
   margin-bottom: 24px;
+  box-shadow: 8px 8px 12px rgba(0, 0, 0, 0.1);
 }
 
 .empty-state {

@@ -77,6 +77,7 @@ export function useAlarm() {
       label: '告警时间',
       prop: 'alarmTime',
       minWidth: 180,
+      sortable: true,
       formatter: ({ alarmTime }) => dayjs(alarmTime).format('YYYY-MM-DD HH:mm:ss'),
     },
     {
@@ -94,7 +95,6 @@ export function useAlarm() {
       minWidth: 120,
       cellRenderer: ({ row, props }) => {
         const map = { 1: '待指派', 2: '处理中', 3: '已完成' }
-
         return <el-tag size={props.size} style={processStatusTagStyle.value(row.status)}>{map[row.status]}</el-tag>
       },
     },

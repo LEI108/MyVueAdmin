@@ -1,6 +1,8 @@
 import { cloneDeep } from '@pureadmin/utils'
+import PhBatteryChargingVertical from '~icons/ph/battery-charging-vertical'
+import PhClover from '~icons/ph/clover'
+import PhLeaf from '~icons/ph/leaf'
 import CheckLine from '~icons/ri/chat-check-line'
-import GroupLine from '~icons/ri/group-line'
 import Question from '~icons/ri/question-answer-line'
 import { dayjs, getRandomIntBetween } from './utils'
 
@@ -29,7 +31,7 @@ const expectedGeneration = 600000
 const generationPercent = ((totalGeneration / expectedGeneration) * 100).toFixed(2)
 const totalGenerationData = [
   {
-    icon: GroupLine,
+    icon: PhBatteryChargingVertical,
     bgColor: '#effaff',
     color: '#41b6ff',
     duration: 2200,
@@ -39,7 +41,7 @@ const totalGenerationData = [
     data: [2101, 5288, 4239, 4962, 6752, 5208, 7450], // 平滑折线图数据
   },
   {
-    icon: Question,
+    icon: PhBatteryChargingVertical,
     bgColor: '#fff5f4',
     color: '#e85f33',
     duration: 1600,
@@ -64,7 +66,7 @@ const equipmentLoadData = [
 // 碳排分析数据
 const carbonAnalysisData = [
   {
-    icon: GroupLine,
+    icon: PhLeaf,
     bgColor: '#effaff',
     color: '#41b6ff',
     duration: 2200,
@@ -74,7 +76,7 @@ const carbonAnalysisData = [
     data: [2101, 5288, 4239, 4962, 6752, 5208, 7450], // 平滑折线图数据
   },
   {
-    icon: Question,
+    icon: PhClover,
     bgColor: '#fff5f4',
     color: '#e85f33',
     duration: 1600,
@@ -84,7 +86,7 @@ const carbonAnalysisData = [
     data: [2216, 1148, 1255, 788, 4821, 1973, 4379],
   },
   {
-    icon: CheckLine,
+    icon: PhLeaf,
     bgColor: '#eff8f4',
     color: '#26ce83',
     duration: 1500,

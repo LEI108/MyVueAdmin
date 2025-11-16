@@ -3,36 +3,24 @@ import { RouteRank } from '../enums'
 
 export default {
   path: '/revenue',
-  redirect: '/revenue/power-purchase',
+  redirect: '/revenue/stationRevenue',
   meta: {
-    icon: 'ph/currency-dollar-simple',
+    icon: 'ph/credit-card',
     title: $t('menus.revenueManagement'),
     rank: RouteRank.REVENUE_MANAGEMENT,
   },
   children: [
     {
-      path: '/revenue/power-purchase',
-      name: 'PowerPurchaseReport',
-      component: () => import('@/views/revenue/power-purchase/index.vue'),
-      meta: { title: $t('menus.powerPurchaseAnalysis') },
-    },
-    {
-      path: '/revenue/station',
+      path: '/revenue/stationRevenue',
       name: 'StationRevenue',
-      component: () => import('@/views/revenue/station/index.vue'),
+      component: () => import('@/views/revenue/stationRevenue/index.vue'),
       meta: { title: $t('menus.stationRevenue') },
     },
     {
-      path: '/revenue/owner',
-      name: 'OwnerRevenue',
-      component: () => import('@/views/revenue/owner/index.vue'),
-      meta: { title: $t('menus.ownerRevenue') },
-    },
-    {
-      path: '/revenue/report',
-      name: 'FinanceReport',
-      component: () => import('@/views/revenue/report/index.vue'),
-      meta: { title: $t('menus.financeReport') },
+      path: '/revenue/salesRevenue',
+      name: 'SalesRevenue',
+      component: () => import('@/views/revenue/salesRevenue/index.vue'),
+      meta: { title: $t('menus.salesRevenue') },
     },
   ],
 } satisfies RouteConfigsTable

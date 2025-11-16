@@ -14,5 +14,8 @@ export default {
     contentFullScreen: 'Content ExitFullScreen',
     clickCollapse: 'Click Collapse',
     clickExpand: 'Click Expand',
+    confirm: 'Confirm',
+    switch: 'Switch',
+    close: 'Close',
   },
 }

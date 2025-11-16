@@ -4,8 +4,8 @@
 export const RouteRank = {
   HOME: 0,
 
-  // 1. 数据看板
-  DASHBOARD: 10,
+  // 1. 发电管理
+  GENERATION_MANAGEMENT: 10,
 
   // 2. 数据分析与报表
   DATA_ANALYSIS: 20,

@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { useDark } from '@pureadmin/utils'
 import { ref } from 'vue'
+import PhChartLine from '~icons/ph/chart-line'
 import ReCol from '@/components/ReCol'
 import { ReNormalCountTo } from '@/components/ReCountTo/index'
 import Segmented from '@/components/ReSegmented'
 import { ChartArea, ChartLine, ChartRound, ChartWaveBall } from './components/charts/index'
-
 import {
   carbonAnalysisData,
   generationData,
@@ -128,7 +128,7 @@ const periodOptions = [
               class="w-8 h-8 flex justify-center items-center rounded-md"
               :style="{ backgroundColor: isDark ? 'transparent' : '#effaff' }"
             >
-              <IconifyIconOffline icon="solar:energy-bold" color="#41b6ff" width="18" height="18" />
+              <IconifyIconOffline :icon="PhChartLine" color="#37D4CF" width="24" height="24" />
             </div>
             <Segmented v-model="curPeriod" :options="periodOptions" />
           </div>
@@ -160,7 +160,7 @@ const periodOptions = [
               class="w-8 h-8 flex justify-center items-center rounded-md"
               :style="{ backgroundColor: isDark ? 'transparent' : '#e6fff5' }"
             >
-              <IconifyIconOffline icon="mdi:chart-line" color="#26ce83" width="18" height="18" />
+              <IconifyIconOffline :icon="PhChartLine" color="#37D4CF" width="24" height="24" />
             </div>
           </div>
           <ChartArea

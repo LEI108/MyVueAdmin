@@ -14,5 +14,8 @@ export default {
     contentFullScreen: '内容区全屏',
     clickCollapse: '点击折叠',
     clickExpand: '点击展开',
+    confirm: '确认',
+    switch: '切换',
+    close: '关闭',
   },
 }

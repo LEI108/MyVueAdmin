@@ -2,31 +2,31 @@ import { $t } from '@/plugins/i18n'
 import { RouteRank } from '../enums'
 
 export default {
-  path: '/dashboard',
-  redirect: '/dashboard/generation',
+  path: '/generation',
+  redirect: '/generation/generationDashboard',
   meta: {
     icon: 'ph/chart-bar',
-    title: $t('menus.dashboard'),
-    rank: RouteRank.DASHBOARD,
+    title: $t('menus.generationManagement'),
+    rank: RouteRank.GENERATION_MANAGEMENT,
   },
   children: [
     {
-      path: '/dashboard/generation',
-      name: 'Generationdashboard',
-      component: () => import('@/views/dashboard/generation/index.vue'),
+      path: '/generation/generationDashboard',
+      name: 'GenerationDashboard',
+      component: () => import('@/views/generation/generationDashboard/index.vue'),
       meta: { title: $t('menus.generationDashboard') },
     },
     {
-      path: '/dashboard/energy',
+      path: '/generation/energy',
       name: 'Energydashboard',
-      component: () => import('@/views/dashboard/energy/index.vue'),
+      component: () => import('@/views/generation/energy/index.vue'),
       meta: { title: $t('menus.energyDashboard') },
     },
     {
-      path: '/dashboard/custom-report',
+      path: '/generation/report',
       name: 'CustomReport',
-      component: () => import('@/views/dashboard/custom-report/index.vue'),
-      meta: { title: $t('menus.customReport') },
+      component: () => import('@/views/generation/report/index.vue'),
+      meta: { title: $t('menus.powerReport') },
     },
   ],
 } satisfies RouteConfigsTable
